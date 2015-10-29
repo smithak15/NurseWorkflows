@@ -1,0 +1,76 @@
+@CHARSET "ISO-8859-1";
+body {
+    background-color: #F0F0EE;
+    color: #333333;
+    width: 75%;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    font-family: font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', 'Palatino LT STD', Georgia, serif;
+    font-size: large;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+p {
+	text-align: justify;
+    text-justify: inter-word;
+}
+
+a:visited {color: #29140}
+
+.heading {
+	text-align: center;
+	font-weight: 100;
+}
+
+.headDivs {
+	height: 30px;
+    width: 175px;
+    border-radius: 5px;
+    margin-left:50px;
+    margin-bottom:50px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #0066FF;
+    text-color :  #0066FF;
+    text-align: center;
+    color: inherit;
+	text-align: center;
+	font-weight: 100;
+	text-decoration: none;
+    display: block; position:relative; float : left;
+  	line-height: 30px;
+}
+
+.banner {
+	background-color: #FFFFFF;
+}
+
+
+h4 {
+	text-align: center;
+}
+
+.heading a, u {
+    text-decoration: none;
+    color: inherit;
+}
+
+.headDivs a, u {
+    text-decoration: none;
+    text-color :  #0066FF;
+}
+
+
+th{
+	border-spacing : 10px;
+	border-bottom: 2px solid black;
+	border-right: 2px solid black;
+}
+
+td {
+	border-spacing : 10px;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+}
