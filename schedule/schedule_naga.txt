@@ -1,7 +1,7 @@
 Schedule and deliverable:
 
 - Design database schema for the project : 10/30 by 8PM (estimate : 2 hours)
-- Design UI for 'Add Participant' page : 11/02 by 8PM (estimate : 3 hours)
+- Design UI for 'Add Participants' page : 11/02 by 8PM (estimate : 3 hours)
 - Setting up MySQL locally : 12/02 by 8PM (estimate : 1 hour)
 - SQL scripts for table creation  : 11/03 by 9PM (estimate : 1 hour)
 - Design UI for 'Add Activities' page : 11/04 by 8PM (estimate : 3 hours)
