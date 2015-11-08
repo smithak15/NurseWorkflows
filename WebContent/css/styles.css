@@ -43,7 +43,11 @@ a:visited {color: #29140}
   	line-height: 30px;
 }
 
-.banner {
+.banner{
+	background-color: #FFFFFF;
+}
+
+.bodyContent{
 	background-color: #FFFFFF;
 }
 
