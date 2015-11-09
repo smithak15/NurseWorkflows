@@ -30,6 +30,16 @@
   					</ul>	
   				</div>
   				</div>
+  				
+  				<div class="well col-md-8 col-md-offset-2 row">
+  				<p style="font-size:120%">Hello There!</p>
+  				 <p style="font-size:120%">  This application is used for recording work flow of nurses over a period of time and obtaining the workflow information.</p>
+  				 <p style="font-size:120%">  Please find below the purposes of various tabs available</p>
+  				 <p style="font-size:120%">  1)<span style="font-weight:bold;">Setup profile:</span>   This tab takes project,participants and activities as input. It would allow user to select locations on the map and save.</p> 
+  				 <p style="font-size:120%">  2)<span style="font-weight:bold;">Data Collection:</span> This would allow user to record the activities and durations in different locations.</p>
+  				 <p style="font-size:120%">  3)<span style="font-weight:bold;">View Workflow:</span>   This would allow user to select and download recorded data to analyze for further use.</p>
+  				
+  				</div>
   	</div>	
   </body>
  </html>
