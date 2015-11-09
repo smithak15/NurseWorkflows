@@ -1,80 +1,27 @@
 @CHARSET "ISO-8859-1";
-body {
-    background-color: #F0F0EE;
-    color: #333333;
-    width: 75%;
-    background-position: center;
-    margin: 0;
-    padding: 0;
-    font-family: font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', 'Palatino LT STD', Georgia, serif;
-    font-size: large;
-    margin-left: auto;
-    margin-right: auto;
-}
+.bs-wizard {margin-top: 40px;}
 
-p {
-	text-align: justify;
-    text-justify: inter-word;
-}
+/*Form Wizard*/
+.bs-wizard {border-bottom: solid 1px #e0e0e0; padding: 0 0 10px 0;}
+.bs-wizard > .bs-wizard-step {padding: 0; position: relative;}
+.bs-wizard > .bs-wizard-step + .bs-wizard-step {}
+.bs-wizard > .bs-wizard-step .bs-wizard-stepnum {color: #595959; font-size: 16px; margin-bottom: 5px;}
+.bs-wizard > .bs-wizard-step .bs-wizard-info {color: #999; font-size: 14px;}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot {position: absolute; width: 30px; height: 30px; display: block; background: #fbe8aa; top: 45px; left: 50%; margin-top: -15px; margin-left: -15px; border-radius: 50%;} 
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {content: ' '; width: 14px; height: 14px; background: #fbbd19; border-radius: 50px; position: absolute; top: 8px; left: 8px; } 
+.bs-wizard > .bs-wizard-step > .progress {position: relative; border-radius: 0px; height: 8px; box-shadow: none; margin: 20px 0;}
+.bs-wizard > .bs-wizard-step > .progress > .progress-bar {width:0px; box-shadow: none; background: #fbe8aa;}
+.bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {width:100%;}
+.bs-wizard > .bs-wizard-step.active > .progress > .progress-bar {width:50%;}
+.bs-wizard > .bs-wizard-step:first-child.active > .progress > .progress-bar {width:0%;}
+.bs-wizard > .bs-wizard-step:last-child.active > .progress > .progress-bar {width: 100%;}
+.bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot {background-color: #f5f5f5;}
+.bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot:after {opacity: 0;}
+.bs-wizard > .bs-wizard-step:first-child  > .progress {left: 50%; width: 50%;}
+.bs-wizard > .bs-wizard-step:last-child  > .progress {width: 50%;}
+.bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
+/*END Form Wizard*/
 
-a:visited {color: #29140}
-
-.heading {
-	text-align: center;
-	font-weight: 100;
-}
-
-.headDivs {
-	height: 30px;
-    width: 175px;
-    border-radius: 5px;
-    margin-left:50px;
-    margin-bottom:50px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: #0066FF;
-    text-color :  #0066FF;
-    text-align: center;
-    color: inherit;
-	text-align: center;
-	font-weight: 100;
-	text-decoration: none;
-    display: block; position:relative; float : left;
-  	line-height: 30px;
-}
-
-.banner{
-	background-color: #FFFFFF;
-}
-
-.bodyContent{
-	background-color: #FFFFFF;
-}
-
-
-h4 {
-	text-align: center;
-}
-
-.heading a, u {
-    text-decoration: none;
-    color: inherit;
-}
-
-.headDivs a, u {
-    text-decoration: none;
-    text-color :  #0066FF;
-}
-
-
-th{
-	border-spacing : 10px;
-	border-bottom: 2px solid black;
-	border-right: 2px solid black;
-}
-
-td {
-	border-spacing : 10px;
-	border-bottom: 1px solid black;
-	border-right: 1px solid black;
+.new-color{
+	background-color: #E5F2FF;
 }
