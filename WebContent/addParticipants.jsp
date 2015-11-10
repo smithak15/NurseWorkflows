@@ -67,7 +67,7 @@
 		  		<div class="form-group">
 		    		<label class="control-label col-sm-6" id="projName">Participant Name:</label>
 		    		<div class="col-sm-4">
-		      			<input type="email" class="form-control" id="email" placeholder="Enter participant's name">
+		      			<input type="text" class="form-control" id="name" placeholder="Enter participant's name">
 		    		</div>
 		  		</div>
 		  		<div class="form-group">

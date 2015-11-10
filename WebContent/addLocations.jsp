@@ -78,7 +78,8 @@
 			<!-- <div id="coords" class="col-md-2">
   					Text
 			   </div> -->
-			<div class="col-md-2">
+			   <div class="row">
+			<div class="col-md-4 col-md-offset-4">
   					<ul class="nav nav-pills nav-justified">
         				<li>
 	        				<a id="drawButton" href="#" class="btn btn-info btn-lg col-sm-offset-1">
@@ -92,20 +93,32 @@
 	        			</li>
 			   		</ul>
 			   </div>
-			
-  				<!-- <div class="col-md-8 col-md-offset-2"> -->
-  					<div id="canvas">
-  					</div>
-  						<!-- <svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" id="svg"></svg> -->
-  						
-  					
-  					
+			</div>
   				
-  					<div class="col-md-offset-8 col-md-6">
-		      			<button type="button" class="btn btn-default col-md-4">Cancel</button>
-		      			<button type="button" class="btn btn-success col-md-4">Finish</button>
-		    		</div>
-  				<!-- </div> -->
+  			<div class="row">
+  					<div id="canvas">
+  					
+  					</div>
+  			</div>
+  						
+  						
+  					<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+  					<ul class="nav nav-pills nav-justified">
+        				<li>
+	        				<a id="drawButton" href="#" class="btn btn-default btn-lg col-sm-offset-1">Cancel 
+	        				</a>
+	        			</li>
+				        <li>
+	        				<a href="#" class="btn btn-success btn-lg col-sm-offset-1">Finish 
+	        				</a>
+	        			</li>
+			   		</ul>
+			   </div>
+			</div>
+  					
+  	
+  				
   				
 		</div>
   </body>
@@ -122,7 +135,8 @@
         .attr("id","mapImage")
         .attr("xlink:href", "LibMap3.jpg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
+		.attr("class","col-md-12");
         
 	});
 		//On click of draw adding crosshair cursor style
@@ -178,6 +192,10 @@
 	    	var canvasx = Math.round(position.left);
 	    	var canvasy = Math.round(position.top);
 	        if (element !== null) {
+	        	var input = document.createElement('input');
+	            input.type = "text";
+	            element.appendChild(input);
+	            input.focus();
 	            element = null;
 	            canvas.style.cursor = "default";
 	            console.log("finsihed.");
