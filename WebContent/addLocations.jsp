@@ -75,9 +75,9 @@
                   <div class="bs-wizard-info text-center">Add Locations </div>
                 </div>
 			</div>
-			<div id="coords" class="col-md-2">
+			<!-- <div id="coords" class="col-md-2">
   					Text
-			   </div>
+			   </div> -->
 			<div class="col-md-2">
   					<ul class="nav nav-pills nav-justified">
         				<li>
@@ -127,22 +127,22 @@
 	});
 		//On click of draw adding crosshair cursor style
 		$("#drawButton").click(function(){
-			//var image_x = document.getElementById('mapImage');
-			//image_x.parentNode.removeChild(image_x);
 			initDraw(document.getElementById('canvas'));
 		})	
 		
-		 var canvasElement = document.getElementById('mapImage');
-    	var position = canvasElement.getBoundingClientRect();
-    	var canvasx = Math.round(position.left);
-    	var canvasy = Math.round(position.top);
+		 
 		function initDraw(canvas) {
-			
+			var canvasElement = document.getElementById('mapImage');
+	    	var position = canvasElement.getBoundingClientRect();
+	    	var canvasx = Math.round(position.left);
+	    	var canvasy = Math.round(position.top);
     		function setMousePosition(e) {
         		var ev = e || window.event; //Moz || IE
         		if (ev.pageX) { //Moz
-	            mouse.x = ev.pageX - window.pageXOffset;
-	            mouse.y = ev.pageY - window.pageYOffset;
+	            mouse.absX = ev.pageX;
+	            mouse.absY = ev.pageY;
+	            mouse.x = ev.pageX - canvasx;
+	            mouse.y = ev.pageY - canvasy;
 	        } else if (ev.clientX) { //IE
 	            mouse.x = ev.clientX + document.body.scrollLeft;
 	            mouse.y = ev.clientY + document.body.scrollTop;
@@ -153,20 +153,22 @@
 
 	    var mouse = {
 	    		
-	        x: canvasx,
-	        y: canvasy,
+	        x: 0,
+	        y: 0,
 	        startX: 0,
-	        startY: 0
+	        startY: 0,
+	        absX:0,
+	        absY:0
 	    };
 	    var element = null;
 
 	    canvas.onmousemove = function (e) {
 	        setMousePosition(e);
 	         if (element !== null) {
-	            element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
-	            element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-	            element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-	            element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+	            element.style.width = Math.abs(mouse.absX - mouse.startX) + 'px';
+	            element.style.height = Math.abs(mouse.absY - mouse.startY) + 'px';
+	            element.style.left = (mouse.absX - mouse.startX < 0) ? mouse.absX + 'px' : mouse.startX + 'px';
+	            element.style.top = (mouse.absY - mouse.startY < 0) ? mouse.absY + 'px' : mouse.startY + 'px';
 	        } 
 	    }
 
@@ -181,25 +183,25 @@
 	            console.log("finsihed.");
 	        } else {
 	            console.log("begun.");
-	            mouse.startX = mouse.x;
-	            mouse.startY = mouse.y;
+	            mouse.startX = mouse.absX;
+	            mouse.startY = mouse.absY;
 	            element = document.createElement('div');
 	            element.className = 'rectangle';
 	            //alert("x: "+mouse.x+" y:"+mouse.y);
-	            element.style.left = mouse.x  + 'px';
-	            element.style.top = mouse.y  + 'px';
+	            element.style.left = mouse.absX  + 'px';
+	            element.style.top = mouse.absY  + 'px';
 	            canvas.appendChild(element)
 	            canvas.style.cursor = "crosshair";
 	        }
 	    }
 	    
-	    canvas.addEventListener('mousemove', function(e){
+	    /* canvas.addEventListener('mousemove', function(e){
 	    	var canvasElement = document.getElementById('mapImage');
 	    	var position = canvasElement.getBoundingClientRect();
 	    	var canvasx = position.left;
 	    	var canvasy = position.top;
-			document.getElementById('coords').innerHTML = + mouse.x + ', ' + mouse.y+','+canvasx+', '+Math.round(canvasy);
-		}, false);
+			document.getElementById('coords').innerHTML = + mouse.absX + ', ' + mouse.absY+','+window.pageXOffset+', '+Math.round(window.pageYOffset);
+		}, false); */
 }
 	</script>
 </html>
