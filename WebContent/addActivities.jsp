@@ -105,10 +105,11 @@
         $("#success-alert").hide();
         $("#listGroup").hide();
 		$("#addButton").click(function(){
+			$("#success-alert").show();
 			$("#listGroup").show();
-			$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
-		    	$("#success-alert").alert('hide');
-			});
+			//$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+		    	//$("#success-alert").alert('hide');
+			//});
 		});
 	});
 		</script>
