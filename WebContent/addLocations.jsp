@@ -41,7 +41,7 @@
   					<ul class="nav nav-pills nav-justified">
 	    				<li><a href="index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		    			<li class="active"><a href="setupProfile.jsp">Setup Profile</a></li>
-		    			<li><a href="#menu2">Data Collection</a></li>
+		    			<li><a href="dataCollection.jsp">Data Collection</a></li>
 	    				<li><a href="#menu3">View Workflow</a></li>
   					</ul>	
   				</div>
@@ -78,9 +78,9 @@
                 </div>
 			</div>
 			<%-- Div which displayes coordinates of mouse. Let it be commented --%>
-			<!-- <div id="coords" class="col-md-2">
+			 <div id="coords" class="col-md-2">
   					Text
-			   </div> -->
+			   </div> 
 			   
 			<%-- Draw and Clear buttons row --%>
 			<div class="row">
@@ -92,7 +92,7 @@
 		        			</a>
 		        		</li>
 					    <li>
-		        			<a href="#" class="btn btn-info btn-lg col-sm-offset-1">
+		        			<a id="clearButton" href="#" class="btn btn-info btn-lg col-sm-offset-1">
 		          				<span class="glyphicon glyphicon-erase"></span> Clear 
 		        			</a>
 		        		</li>
@@ -114,7 +114,7 @@
 	        				</a>
 	        			</li>
 				        <li>
-	        				<a href="#" class="btn btn-success btn-lg col-sm-offset-1">Finish 
+	        				<a href="#" id="finish" class="btn btn-success btn-lg col-sm-offset-1">Finish 
 	        				</a>
 	        			</li>
 			   		</ul>
@@ -127,6 +127,9 @@
 	var width = 808; //height and width for svg
 	var height = 520;
 	var svg;
+	var canvasx;
+	var canvasy;
+	var rectangleId = 0;
 	$(document).ready (function(){ // when document is ready, create svg element and append canvas div and load map image and append to it
 		svg = d3.select("body").select("#canvas").append("svg").attr("width", width).attr("height", height);
 		var imgs = svg.selectAll("image").data([0])
@@ -143,13 +146,70 @@
 	$("#drawButton").click(function(){
 		initDraw(document.getElementById('canvas'));
 	});	
+	
+	$("#clearButton").click(function(){
+		$(".rectangle").each(function() {
+			$(this).remove();
+		});
+		rectangleId = 0;
+	});	
+	
+	$("#finish").click(function(){
 		
+		var left = "";
+		var top = "";
+		var str = "";
+		var width = "";
+		var height = "";
+		var text = '{"rectangles":[' ;
+		var count = 0;
+		$(".rectangle").each(function() {
+		    // element is a node with the desired class name
+		   
+		    top = $(this).css("top");
+		    top = parseInt(top);
+		    top = top - canvasy;
+		    left = $(this).css("left");
+		    left = parseInt(left);
+		    width = parseInt($(this).css("width"));
+		    height = parseInt($(this).css("height"));
+		    var attrId = $(this).attr("id");
+		    if(count == 0){
+		    	count++;
+		    }else{
+		    	text= text+",";
+		    	count++;
+		    }
+		    text = text + '{"id":\"'+attrId+'\","top":\"'+top+'\","left":\"'+left+'\","width":\"'+width+'\","height":\"'+height+'\"}';
+		   
+		  });
+		text = text + ']}';
+		alert(text);
+		$.ajax({
+			    type: "POST",
+			    url: "setupProfile.do",
+			    // The key needs to match your method's input parameter (case-sensitive).
+			    data:text,
+			    contentType: "application/json; charset=utf-8",
+			    dataType: "json",
+			    success: function(json){
+			    	console.log(JSON.stringify(json.rectangles));
+			    	   $.each(json.rectangles, function(index, rectangle){
+			    	     alert(rectangle.id);
+			    	   });
+			    },
+			    failure: function(errMsg) {
+			        alert(errMsg);
+			    }
+			});
+	});		
 		 
 	function initDraw(canvas) {
 		var canvasElement = document.getElementById('mapImage');
 	   	var position = canvasElement.getBoundingClientRect(); //get coordintes of map
-	   	var canvasx = Math.round(position.left);
-	   	var canvasy = Math.round(position.top);
+	   	canvasx = Math.round(position.left);
+	   	canvasy = Math.round(position.top);
+	   	
     	function setMousePosition(e) {
        		var ev = e || window.event; //Moz || IE
        		if (ev.pageX) { //Moz
@@ -185,15 +245,14 @@
 	    }
 
 	    canvas.onclick = function (e) { //any click on top of the floor plan
-	    	var canvasElement = document.getElementById('mapImage');
-	    	var position = canvasElement.getBoundingClientRect();
-	    	var canvasx = Math.round(position.left);
-	    	var canvasy = Math.round(position.top);
+	    	
 	        if (element !== null) { //if element not equal to null means, the rectangle is already being drawn
 	        	var input = document.createElement('input'); //add textbox into rectangle
 	            input.type = "text";
+	        	input.id="rectangleText_" + rectangleId;
 	            element.appendChild(input);
 	            input.focus();
+	            input.value="Please enter";
 	            element = null; //make the element null
 	            canvas.style.cursor = "default"; //reset cursor
 	            console.log("finsihed.");
@@ -206,20 +265,23 @@
 	            //alert("x: "+mouse.x+" y:"+mouse.y);
 	            element.style.left = mouse.absX  + 'px'; //set rectangles position
 	            element.style.top = mouse.absY  + 'px'; 
-	            canvas.appendChild(element) //append rectangle into image
+	            rectangleId ++;
+	            element.id = "rectangleId_" + rectangleId;
+	            canvas.appendChild(element); //append rectangle into image
 	            canvas.style.cursor = "crosshair"; //change cursor style
 	        }
 	    }
 	    
 	    //Function to display coordinates. Leave it commented
-	    /* canvas.addEventListener('mousemove', function(e){
+	     canvas.addEventListener('mousemove', function(e){
 	    	var canvasElement = document.getElementById('mapImage');
 	    	var position = canvasElement.getBoundingClientRect();
 	    	var canvasx = position.left;
 	    	var canvasy = position.top;
-			document.getElementById('coords').innerHTML = + mouse.absX + ', ' + mouse.absY+','+window.pageXOffset+', '+Math.round(window.pageYOffset);
-		}, false); */
+			document.getElementById('coords').innerHTML = mouse.absX + ', ' + mouse.absY+','+canvasx+', '+canvasy;
+		}, false); 
 	}
+	
 	</script>
 </html>
   
