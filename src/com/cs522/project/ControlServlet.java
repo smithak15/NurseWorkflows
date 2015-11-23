@@ -66,6 +66,12 @@ public class ControlServlet extends HttpServlet {
 			addActivities(request,response);
 		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/addLocations.do")){
 			addLocations(request,response);
+		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/dataCollection.do")){
+			dataCollection(request,response);
+		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/getParticipantsAjax.do")){
+			getParticipants(request,response);
+		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/loadLayout.do")){
+			loadLayout(request,response);
 		}else{
 		
 		
@@ -78,22 +84,23 @@ public class ControlServlet extends HttpServlet {
 	    
 	    Map<String,Rectangle> rectList = new HashMap<String,Rectangle>();
 	    
-	   /* Rectangle rect = new Rectangle();
-	    rect.setId("rectangleId_1");
-	    rect.setTop(50);
-	    rect.setLeft(198);
-	    rect.setHeight(86);
-	    rect.setWidth(161);
-	    
+	    Rectangle rect = new Rectangle();
+	    rect.setId("1");
+	    rect.setTop(304);
+	    rect.setLeft(216);
+	    rect.setHeight(99);
+	    rect.setWidth(168);
+	    rect.setLocation("Surgery");
 	    rectList.put("rectangle1",rect);
 	    
 	    rect = new Rectangle();
-	    rect.setId("rectangleId_2");
-	    rect.setTop(50);
-	    rect.setLeft(476);
-	    rect.setHeight(82);
-	    rect.setWidth(115);
-	    rectList.put("rectangle2",rect);*/
+	    rect.setId("2");
+	    rect.setTop(434);
+	    rect.setLeft(593);
+	    rect.setHeight(65);
+	    rect.setWidth(95);
+	    rect.setLocation("Lab");
+	    rectList.put("rectangle2",rect);
 	    
 	    JSONObject json = new JSONObject();
 	    json.accumulate("rectangles",rectList);
@@ -199,6 +206,8 @@ public class ControlServlet extends HttpServlet {
 	 	        	rect.setHeight(Integer.parseInt(o.toString()));
 	 	        }else if(key.equalsIgnoreCase("width")){
 	 	        	rect.setWidth(Integer.parseInt(o.toString()));
+	 	        }else if(key.equalsIgnoreCase("locName")){
+	 	        	rect.setLocation(o.toString());
 	 	        }
 	 	    }
 	    	 rectangles.add(rect);
@@ -214,19 +223,52 @@ public class ControlServlet extends HttpServlet {
 		}if(null != session.getAttribute("activities")){
 			activities = (List<Activity>) session.getAttribute("activities");
 		}
-		DatabaseConnector dao = new DatabaseConnector();
+		//TODO: Comment below for demo only. later uncomment
+		/*DatabaseConnector dao = new DatabaseConnector();
 		try {
 			dao.getConnection();
 			dao.addDetails(project, participants, activities, rectangles);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 	    JSONObject json = new JSONObject();
 	    json.accumulate("success","true");
 	    response.getWriter().write(json.toString());
 	    /*request.setAttribute("setupProfileSuccess", true);
 	    request.getRequestDispatcher("index.jsp").forward(request, response);*/
+	}
+	
+	
+	private void dataCollection(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
+		DatabaseConnector dao = new DatabaseConnector();
+		try{
+			dao.getConnection();
+			List<Project> projList = dao.getAllProjects();
+			request.setAttribute("projList", projList);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		request.getRequestDispatcher("dataCollection.jsp").forward(request, response);
+	}
+	
+	private void getParticipants(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
+		DatabaseConnector dao = new DatabaseConnector();
+		try{
+			dao.getConnection();
+			List<Participant> partiList = dao.getProjectParticipants(Integer.parseInt(request.getParameter("projectId")));
+			JSONObject json = new JSONObject();
+		    json.accumulate("partiList",partiList);
+		    response.getWriter().write(json.toString());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		//request.getRequestDispatcher("dataCollection.jsp").forward(request, response);
+	}
+	
+	private void loadLayout(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
+		//DatabaseConnector dao = new DatabaseConnector();
+		request.getRequestDispatcher("dataCollectionTwo.jsp").forward(request, response);
 	}
 }

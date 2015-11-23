@@ -10,6 +10,20 @@ package com.cs522.project;
 public class Participant {
 	private String partiName;
 	private String partiDesc;
+	private int partiId;
+	
+	/**
+	 * @return the partiId
+	 */
+	public int getPartiId() {
+		return partiId;
+	}
+	/**
+	 * @param partiId the partiId to set
+	 */
+	public void setPartiId(int partiId) {
+		this.partiId = partiId;
+	}
 	/**
 	 * @return the partiName
 	 */

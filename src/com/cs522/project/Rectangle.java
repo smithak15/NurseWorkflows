@@ -2,7 +2,6 @@ package com.cs522.project;
 
 public class Rectangle {
 	String location;
-	
 	String id;
 	Integer top;
 	Integer left;
@@ -82,6 +81,6 @@ public class Rectangle {
 	 * @param location the location to set
 	 */
 	public void setLocation(String location) {
-		this.location = "location";
+		this.location = location;
 	}
 }

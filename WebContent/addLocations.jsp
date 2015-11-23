@@ -21,8 +21,8 @@
 			.rectangle { /* style for the rectangles to be drawn */
     			border: 4px solid #FF0000;
     			position: absolute;
-    			opacity : 0.7;
-    			background-color : #f2f2f2;
+    		
+    			background : rgba(242,242,242,0.7);
 			}
 			#svg { /* style for svg */
     			position: absolute;
@@ -43,7 +43,7 @@
   					<ul class="nav nav-pills nav-justified">
 	    				<li><a href="index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		    			<li class="active"><a href="setupProfile.jsp">Setup Profile</a></li>
-		    			<li><a href="dataCollection.jsp">Data Collection</a></li>
+		    			<li><a href="dataCollection.do">Data Collection</a></li>
 	    				<li><a href="#menu3">View Workflow</a></li>
   					</ul>	
   				</div>
@@ -80,9 +80,9 @@
                 </div>
 			</div>
 			<%-- Div which displayes coordinates of mouse. Let it be commented --%>
-			 <div id="coords" class="col-md-2">
+			 <!-- <div id="coords" class="col-md-2">
   					Text
-			   </div> 
+			   </div> -->  
 			   
 			<%-- Draw and Clear buttons row --%>
 			<div class="row">
@@ -101,12 +101,14 @@
 				   	</ul>
 				</div>
 			</div>
+			<br/>
   			<%-- Floor plan image display area --%>	
   			<div class="row">
   					<div id="canvas">
   					
   					</div>
   			</div>
+  			
   			<%-- Cancel and Finish button rows --%>			
   			<div class="row">
 				<div class="col-md-4 col-md-offset-4">
@@ -165,6 +167,7 @@
 		var height = "";
 		var text = '' ;
 		var count = 0;
+		var locName = "";
 		$(".rectangle").each(function() {
 		    // element is a node with the desired class name
 		   
@@ -176,17 +179,18 @@
 		    width = parseInt($(this).css("width"));
 		    height = parseInt($(this).css("height"));
 		    var attrId = $(this).attr("id");
+		    locName = $("#rectangleText_"+attrId).val();
 		    if(count == 0){
 		    	count++;
 		    }else{
 		    	text= text+";";
 		    	count++;
 		    }
-		    text = text + '{"id":\"'+attrId+'\","top":\"'+top+'\","left":\"'+left+'\","width":\"'+width+'\","height":\"'+height+'\"}';
+		    text = text + '{"id":\"'+attrId+'\","locName":\"'+locName+'\","top":\"'+top+'\","left":\"'+left+'\","width":\"'+width+'\","height":\"'+height+'\"}';
 		   
 		  });
 		//text = text + '}';
-		alert(text);
+		//alert(text);
 		$.ajax({
 			    type: "POST",
 			    url: "addLocations.do",
@@ -205,7 +209,7 @@
 			    failure: function(errMsg) {
 			        alert(errMsg);
 			    }
-			});
+			}); 
 		
 	});		
 	
@@ -247,17 +251,27 @@
 	            element.style.left = (mouse.absX - mouse.startX < 0) ? mouse.absX + 'px' : mouse.startX + 'px';
 	            element.style.top = (mouse.absY - mouse.startY < 0) ? mouse.absY + 'px' : mouse.startY + 'px';
 	        } 
+	         canvas.style.cursor = "crosshair"; //change cursor style
 	    }
 
 	    canvas.onclick = function (e) { //any click on top of the floor plan
 	    	
 	        if (element !== null) { //if element not equal to null means, the rectangle is already being drawn
+	        	var div = document.createElement('div');
+	        	div.innerHTML = "Enter Location Name:";
+	        	element.appendChild(div);
 	        	var input = document.createElement('input'); //add textbox into rectangle
 	            input.type = "text";
 	        	input.id="rectangleText_" + rectangleId;
-	            element.appendChild(input);
+	            $("#"+input.id).attr("placeholder","Enter location");
+	            div.appendChild(input);
 	            input.focus();
-	            input.value="Please enter";
+	           	/* var htmlCode = 'Enter Location name: <input type="text" id="rectangleText_'+element.id+'" value="" autofocus></input>';
+	            $("#"+element.id).tooltip({title: htmlCode, html: true, placement: "right"}).tooltip('show');
+	            $('[id^=tooltip]').each(function(){
+	            	$("#canvas").append($(this));
+	            }); */
+	            
 	            element = null; //make the element null
 	            canvas.style.cursor = "default"; //reset cursor
 	            console.log("finsihed.");
@@ -271,9 +285,8 @@
 	            element.style.left = mouse.absX  + 'px'; //set rectangles position
 	            element.style.top = mouse.absY  + 'px'; 
 	            rectangleId ++;
-	            element.id = "rectangleId_" + rectangleId;
+	            element.id = rectangleId;
 	            canvas.appendChild(element); //append rectangle into image
-	            canvas.style.cursor = "crosshair"; //change cursor style
 	        }
 	    }
 	    
@@ -283,7 +296,7 @@
 	    	var position = canvasElement.getBoundingClientRect();
 	    	var canvasx = position.left;
 	    	var canvasy = position.top;
-			document.getElementById('coords').innerHTML = mouse.absX + ', ' + mouse.absY+','+canvasx+', '+canvasy;
+		document.getElementById('coords').innerHTML = Math.round(mouse.absX) + ', ' + Math.round(mouse.absY)+','+Math.round(canvasx)+', '+Math.round(canvasy);
 		}, false); 
 	}
 	

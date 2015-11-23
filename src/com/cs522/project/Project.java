@@ -8,12 +8,13 @@ package com.cs522.project;
  *
  */
 public class Project {
+	private int projectId;
 	private String projectName;
 	private String projectDesc;
 	private int layoutId;
 	
 	public Project(){
-		super();
+		
 	}
 	
 	public Project(String projectName, String projectDesc, int layoutId) {
@@ -22,6 +23,21 @@ public class Project {
 		this.projectDesc = projectDesc;
 		this.layoutId = layoutId;
 	}
+		
+	/**
+	 * @return the projectId
+	 */
+	public int getProjectId() {
+		return projectId;
+	}
+
+	/**
+	 * @param projectId the projectId to set
+	 */
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
+	}
+
 	/**
 	 * @return the projectName
 	 */

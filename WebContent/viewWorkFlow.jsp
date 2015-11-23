@@ -25,7 +25,7 @@
   					<ul class="nav nav-pills nav-justified">
 	    				<li><a href="index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		    			<li><a href="setupProfile.jsp">Setup Profile</a></li>
-		    			<li><a href="dataCollection.jsp">Data Collection</a></li>
+		    			<li><a href="dataCollection.do">Data Collection</a></li>
 	    				<li class ="active"><a href="viewWorkflow.jsp">View Workflow</a></li>
   					</ul>	
   				</div>

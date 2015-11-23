@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -10,146 +11,73 @@
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<style>
-			
-			.mapImage{ /* sets width and height for the floorplan image */
-				width:808;
-				height:520;
-			}
-			.rectangle { /* style for the rectangles to be drawn */
-    			border: 4px solid #FF0000;
-    			position: absolute;
-			}
-			#svg { /* style for svg */
-    			position: absolute;
-    			top: 0;
-   				left: 0;
-    			z-index: 2;
-    			display: inline-block;
+			.center_div{
+ 			   	margin: 0 auto;
+    			width:80% /* value of your choice which suits your alignment */
 			}
 		</style>
 	</head>
 	<body>
-	<%-- Container Body --%>
 		<div class="container-fluid .center_div">
-			<%-- Page Header --%>
-			<div class="jumbotron new-color col-md-8 col-md-offset-2 row">
+		
+				<div class="jumbotron new-color col-md-8 col-md-offset-2 row">
 				<h2 class="text-center">Nurse Workflows</h2>
 				<div class="col-md-12 row">
   					<ul class="nav nav-pills nav-justified">
 	    				<li><a href="index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		    			<li><a href="setupProfile.jsp">Setup Profile</a></li>
-		    			<li class="active"><a href="dataCollection.jsp">Data Collection</a></li>
+		    			<li class="active"><a href="dataCollection.do">Data Collection</a></li>
 	    				<li><a href="#menu3">View Workflow</a></li>
   					</ul>	
   				</div>
-  			</div>
-  			<div class="row">
-  					<div id="canvas">
-  					
-  					</div>
-  			</div>
-  			<button type="button"  data-toggle="modal" data-target="#myModal">Open Modal</button>
-  			<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-			<table class="table table-bordered">
-			    <thead>
-			      <tr>
-			        <th>Activities</th>
-			        <th>Location</th>
-			      </tr>
-			    </thead>
-			    <tbody>
-			      <tr>
-			        <td>John</td>
-			        <td>Doe</td>
-			        <td>john@example.com</td>
-			      </tr>
-			      <tr>
-			        <td>Mary</td>
-			        <td>Moe</td>
-			        <td>mary@example.com</td>
-			      </tr>
-			      <tr>
-			        <td>July</td>
-			        <td>Dooley</td>
-			        <td>july@example.com</td>
-			      </tr>
-			    </tbody>
-			  </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-  
-</div>
-  			
+  				</div>
+  				<div class="well col-md-8 col-md-offset-2 row">
+		  			<form class="form-horizontal" role="form" action="loadLayout.do">
+		  				<div class="form-group">
+		    				<label class="control-label col-sm-6">Choose Project:</label>
+		    				<div class="col-sm-4">
+		    				<c:forEach var="lang" items="${param.projList}">
+		    				</c:forEach> 
+						  	<select class="form-control" id="projectId" name="projectId">
+							    <option selected disabled>Please Select</option>
+							    <c:forEach var="proj" items="${projList}">
+							    	<option value="${proj.projectId}"><c:out value="${proj.projectName}"></c:out></option>
+		    					</c:forEach>
+						  	</select>
+		    				</div>
+		  				</div>
+		  				<div class="form-group">
+		    				<label class="control-label col-sm-6">Choose Participant:</label>
+		    				<div class="col-sm-4"> 
+						  	<select class="form-control" id="participantId" name="participantId">
+							    <option selected disabled>Please Select</option>
+						  	</select>
+		    				</div>
+		  				</div>
+		  				<div class="form-group"> 
+				  			<div class="col-md-offset-6 col-md-6">
+				      			<button type="button" class="btn btn-default col-md-4">Cancel</button>
+				      			<button type="submit" class="btn btn-success col-md-4">Next</button>
+				    		</div>
+				  		</div>
+		  			</form>
+		  		</div>
   		</div>
 	</body>
 	<script type="text/javascript">
-	var width = 808; //height and width for svg
-	var height = 520;
-	var svg;
-	var canvasx;
-	var canvasy;
-	
-	$(document).ready (function(){
-		 // when document is ready, create svg element and append canvas div and load map image and append to it
-			svg = d3.select("body").select("#canvas").append("svg").attr("width", width).attr("height", height);
-			var imgs = svg.selectAll("image").data([0])
-			.enter()
-	        .append("svg:image")
-	        .attr("id","mapImage")
-	        .attr("xlink:href", "images/LibMap3.jpg")
-	        .attr("width", width)
-	        .attr("height", height)
-			.attr("class","col-md-12");
-			
-			var canvas = document.getElementById('canvas');
-			var canvasElement = document.getElementById('mapImage');
-	    	var position = canvasElement.getBoundingClientRect();
-	    	var canvasx = position.left;
-	    	var canvasy = position.top;
-	        
-		
-		$.ajax({
-		    type: "POST",
-		    url: "setupProfile.do?getJson=true",
-		    contentType: "application/json; charset=utf-8",
-		    dataType: "json",
-		    success: function(json){
-		    	console.log(JSON.stringify(json));
-		    	   $.each(json.rectangles, function(index, rectangle){
-		    	     alert(rectangle.id);
-		    	     element = document.createElement('button');
-		    	     element.type = "button";
-		    	     element.id = rectangle.id;
-		    	     element.className = 'rectangle';
-		    	     $(element).attr("data-toggle","modal");
-		    	     $(element).attr("data-target","#myModal");
-		    	     element.style.left = rectangle.left+"px";
-		    	     element.style.top = (rectangle.top + canvasy )+ "px";
-		    	     element.style.width = rectangle.width + "px";
-		    	     element.style.height = rectangle.height + "px";
-		    	     canvas.appendChild(element);
-		    	   });
-		    },
-		    failure: function(errMsg) {
-		        alert(errMsg);
-		    }
+		$("#projectId").change(function(){
+			$.ajax({
+			    type: "POST",
+			    url: "getParticipantsAjax.do?"+"projectId="+$(this).val(),
+			    contentType: "application/json; charset=utf-8",
+			    dataType: "json",
+			    success: function(json){
+			    	$.each(json.partiList, function(index, parti){
+			    		var listContainer = $('#participantId');
+			    		listContainer.append('<option value="'+parti.partiId+'"> ' + parti.partiName + '</option>')
+			    	});
+			    }
+			})
 		});
-	});
 	</script>
 </html>

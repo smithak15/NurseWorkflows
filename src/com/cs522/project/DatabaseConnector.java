@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,5 +107,53 @@ public class DatabaseConnector {
         if (resultSet != null) try { resultSet.close(); } catch (SQLException logOrIgnore) {}
     }
 	}
+	
+	public List<Project> getAllProjects()throws Exception{
+		List<Project> projList = new ArrayList<Project>();
+		String sql = "SELECT * FROM PROJECT";
+		try{
+			statement = connect.createStatement();
+			resultSet = statement.executeQuery(sql);
+			while(resultSet.next()){
+				Project project = new Project();
+				project.setProjectId(resultSet.getInt(1));
+				project.setProjectName(resultSet.getString(2));
+				project.setProjectDesc(resultSet.getString(3));
+				project.setLayoutId(resultSet.getInt(4));
+				projList.add(project);
+			}
+		}finally {
+	        if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException logOrIgnore) {}
+	        if (connect != null) try { connect.close(); } catch (SQLException logOrIgnore) {}
+	        if (resultSet != null) try { resultSet.close(); } catch (SQLException logOrIgnore) {}
+	    }
+		return projList;
+	}
+	
+	public List<Participant> getProjectParticipants(int projectId)throws Exception{
+		List<Participant> partiList = new ArrayList<Participant>();
+		String sql = "SELECT PARTICIPANT_ID,PARTICIPANT_NAME "
+				+ "FROM PARTICIPANT "
+				+ "INNER JOIN PARTICIPANT_REL "
+				+ "ON PARTICIPANT.PARTICIPANT_ID = PARTICIPANT_REL.PARTICIPANT_ID_FK "
+				+ "WHERE PARTICIPANT_REL.PROJECT_ID_FK = ?";
+		try{
+			preparedStatement = connect.prepareStatement(sql);
+			preparedStatement.setInt(1, projectId);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				Participant parti = new Participant();
+				parti.setPartiId(resultSet.getInt(1));
+				parti.setPartiName(resultSet.getString(2));
+				partiList.add(parti);
+			}
+		}finally {
+	        if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException logOrIgnore) {}
+	        if (connect != null) try { connect.close(); } catch (SQLException logOrIgnore) {}
+	        if (resultSet != null) try { resultSet.close(); } catch (SQLException logOrIgnore) {}
+	    }
+		return partiList;
+	}
+	
 	
 }

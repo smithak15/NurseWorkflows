@@ -24,7 +24,7 @@
   					<ul class="nav nav-pills nav-justified">
 	    				<li><a href="index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		    			<li class="active"><a href="setupProfile.jsp">Setup Profile</a></li>
-		    			<li><a href="#menu2">Data Collection</a></li>
+		    			<li><a href="dataCollection.do">Data Collection</a></li>
 	    				<li><a href="#menu3">View Workflow</a></li>
   					</ul>	
   				</div>
@@ -81,8 +81,6 @@
 						  <select class="form-control" id="layoutId" name="layoutId">
 						    <option selected disabled>Please Select</option>
 						    <option value="1">Layout 1</option>
-						    <option>Layout 2</option>
-						    <option>Layout 3</option>
 						  </select>
 		    		</div>
 		  		</div>
