@@ -1,11 +1,16 @@
 package com.cs522.project;
 
 public class Rectangle {
+	String location;
+	
 	String id;
 	Integer top;
 	Integer left;
 	Integer width;
 	Integer height;
+	
+	
+	
 	/**
 	 * @return the id
 	 */
@@ -66,5 +71,17 @@ public class Rectangle {
 	public void setHeight(Integer height) {
 		this.height = height;
 	}
-	
+	/**
+	 * @return the location
+	 */
+	public String getLocation() {
+		return location;
+	}
+
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(String location) {
+		this.location = "location";
+	}
 }

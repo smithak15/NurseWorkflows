@@ -78,7 +78,7 @@ public class ControlServlet extends HttpServlet {
 	    
 	    Map<String,Rectangle> rectList = new HashMap<String,Rectangle>();
 	    
-	    Rectangle rect = new Rectangle();
+	   /* Rectangle rect = new Rectangle();
 	    rect.setId("rectangleId_1");
 	    rect.setTop(50);
 	    rect.setLeft(198);
@@ -93,7 +93,7 @@ public class ControlServlet extends HttpServlet {
 	    rect.setLeft(476);
 	    rect.setHeight(82);
 	    rect.setWidth(115);
-	    rectList.put("rectangle2",rect);
+	    rectList.put("rectangle2",rect);*/
 	    
 	    JSONObject json = new JSONObject();
 	    json.accumulate("rectangles",rectList);
@@ -110,12 +110,11 @@ public class ControlServlet extends HttpServlet {
 	private void addProject(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		String projName = request.getParameter("projName");
 		String projDesc = request.getParameter("projDesc");
-		String layoutId = request.getParameter("layoutId");
+		int layoutId = Integer.parseInt(request.getParameter("layoutId"));
 		
 		HttpSession session = request.getSession(true);
-		session.setAttribute("projName", projName);
-		session.setAttribute("projDesc", projDesc);
-		session.setAttribute("layoutId", layoutId);
+		Project project = new Project(projName,projDesc,layoutId);
+		session.setAttribute("project", project);
 		request.getRequestDispatcher("addParticipants.jsp").forward(request, response);
 	}
 	
@@ -167,25 +166,63 @@ public class ControlServlet extends HttpServlet {
 		request.getRequestDispatcher("addLocations.jsp").forward(request, response);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void addLocations(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		StringBuilder sb = new StringBuilder();
 	    BufferedReader br = request.getReader();
 	    String str;
+	    Project project = new Project();
+	    List<Participant> participants = null;
+	    List<Activity> activities = null;
 	    while( (str = br.readLine()) != null ){
 	        sb.append(str);
 	    }    
-	    
+	    List<Rectangle> rectangles = new ArrayList<Rectangle>();
 	    String[] jsonObjects = sb.toString().split(";");
 	    for(String s: jsonObjects){
 	    	JSONObject jObj = new JSONObject(s);
 	    	Iterator<String> it = jObj.keys();
+	    	Rectangle rect = new Rectangle();
 	    	 while(it.hasNext())
 	 	    {
 	 	        String key = (String) it.next(); // get key
 	 	        Object o = jObj.get(key); // get value
 	 	        System.out.println(key + " : " +  o+"\n"); // print the key and value
+	 	        
+	 	        if(key.equalsIgnoreCase("id")){
+	 	        	rect.setId(o.toString());
+	 	        }else if(key.equalsIgnoreCase("top")){
+	 	        	rect.setTop(Integer.parseInt(o.toString()));
+	 	        }else if(key.equalsIgnoreCase("left")){
+	 	        	rect.setLeft(Integer.parseInt(o.toString()));
+	 	        }else if(key.equalsIgnoreCase("height")){
+	 	        	rect.setHeight(Integer.parseInt(o.toString()));
+	 	        }else if(key.equalsIgnoreCase("width")){
+	 	        	rect.setWidth(Integer.parseInt(o.toString()));
+	 	        }
 	 	    }
+	    	 rectangles.add(rect);
 	    }
+	   HttpSession session = request.getSession();
+	   /* if(session != null){
+			session.setAttribute("rectangles", rectangles);
+		}*/
+		if(null != session.getAttribute("project")){
+			project = (Project) session.getAttribute("project");
+		}if(null != session.getAttribute("participants")){
+			participants = (List<Participant>) session.getAttribute("participants");
+		}if(null != session.getAttribute("activities")){
+			activities = (List<Activity>) session.getAttribute("activities");
+		}
+		DatabaseConnector dao = new DatabaseConnector();
+		try {
+			dao.getConnection();
+			dao.addDetails(project, participants, activities, rectangles);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	    JSONObject json = new JSONObject();
 	    json.accumulate("success","true");
 	    response.getWriter().write(json.toString());

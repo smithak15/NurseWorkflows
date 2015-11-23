@@ -195,23 +195,20 @@
 			    contentType: "application/json; charset=utf-8",
 			    dataType: "json",
 			    success: function(json){
-			    	console.log(JSON.stringify(json.sucess));
+			    	console.log(JSON.stringify(json));
 			    	  /* $.each(json.rectangles, function(index, rectangle){
 			    	     alert(rectangle.id);
 			    	   }); */
 			    	//callIndex();   
+			    	window.location.href = "/NurseWorkflows/index.jsp?setupProfileSuccess=true";
 			    },
 			    failure: function(errMsg) {
 			        alert(errMsg);
 			    }
 			});
-		window.location.href = "/NurseWorkflows/index.jsp?setupProfileSuccess=true";
+		
 	});		
 	
-	function callIndex(){
-		window.location.href = "/NurseWorkflows/index.jsp?setupProfileSuccess=true";
-	}
-		 
 	function initDraw(canvas) {
 		var canvasElement = document.getElementById('mapImage');
 	   	var position = canvasElement.getBoundingClientRect(); //get coordintes of map
