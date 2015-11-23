@@ -61,17 +61,17 @@
                 </div>
             </div>
 		  		<div class="well col-md-8 col-md-offset-2 row">
-		  		<form class="form-horizontal" role="form">
+		  		<form class="form-horizontal" role="form" action="addActivities.do">
 		  		<div class="form-group">
 		    		<label class="control-label col-sm-6" id="projName">Activity Name:</label>
 		    		<div class="col-sm-4">
-		      			<input type="email" class="form-control" id="email" placeholder="Enter activity name">
+		      			<input type="text" class="form-control" id="actiName" name="actiName" placeholder="Enter activity name">
 		    		</div>
 		  		</div>
 		  		<div class="form-group">
 		    		<label class="control-label col-sm-6">Activity Description:</label>
 		    		<div class="col-sm-4"> 
-		    			<textarea class="form-control" rows="5" id="projDesc" placeholder="Enter activity description.."></textarea>
+		    			<textarea class="form-control" rows="5" id="actiDesc" name="actiDesc" placeholder="Enter activity description.."></textarea>
 		    		</div>
 		  		</div>
 		  		<div class="form-group">
@@ -87,13 +87,12 @@
 		  		<div class="form-group">
 		  			<div class="list-group col-md-offset-6 col-md-6" id="listGroup">
     					<a href="#" class="list-group-item active">Activities</a>
-    					<a href="#" class="list-group-item">Check Blood Pressure</a>
   					</div>
 		  		</div>
 		  		<div class="form-group"> 
 		  			<div class="col-md-offset-6 col-md-6">
 		      			<button type="button" class="btn btn-default col-md-4">Cancel</button>
-		      			<button type="button" class="btn btn-success col-md-4" onclick="window.location.href='addLocations.jsp'">Next</button>
+		      			<button type="submit" class="btn btn-success col-md-4">Next</button>
 		    		</div>
 		  		</div>
 				</form>
@@ -104,13 +103,29 @@
 	$(document).ready (function(){
         $("#success-alert").hide();
         $("#listGroup").hide();
-		$("#addButton").click(function(){
-			$("#success-alert").show();
-			$("#listGroup").show();
-			//$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
-		    	//$("#success-alert").alert('hide');
-			//});
-		});
 	});
+		$("#addButton").click(function(){
+			
+			
+			var actiName = $("#actiName").val();
+			var actiDesc = $("#actiDesc").val();
+			$.ajax({
+			    type: "POST",
+			    url: "addActivitiesAjax.do?actiName="+actiName+"&actiDesc="+actiDesc,
+			    success: function(data){
+			    	console.log("added");
+			    	$("#success-alert").show();
+			    	$("#success-alert").fadeOut(4000);
+			    	var listContainer = $('#listGroup');
+			    	listContainer.append('<li class="list-group-item"> ' + actiName + '</li>');
+			    	$("#actiName").val('');
+			    	$("#actiDesc").val('');
+			    	listContainer.show();
+			    },
+			    failure: function(errMsg) {
+			        alert(errMsg);
+			    }
+			});
+		});
 		</script>
 </html>

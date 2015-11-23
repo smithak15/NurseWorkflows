@@ -130,7 +130,7 @@
 		    contentType: "application/json; charset=utf-8",
 		    dataType: "json",
 		    success: function(json){
-		    	console.log(JSON.stringify(json.rectangles));
+		    	console.log(JSON.stringify(json));
 		    	   $.each(json.rectangles, function(index, rectangle){
 		    	     alert(rectangle.id);
 		    	     element = document.createElement('button');

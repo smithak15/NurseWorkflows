@@ -21,6 +21,8 @@
 			.rectangle { /* style for the rectangles to be drawn */
     			border: 4px solid #FF0000;
     			position: absolute;
+    			opacity : 0.7;
+    			background-color : #f2f2f2;
 			}
 			#svg { /* style for svg */
     			position: absolute;
@@ -136,7 +138,7 @@
 		.enter()
         .append("svg:image")
         .attr("id","mapImage")
-        .attr("xlink:href", "images/LibMap3.jpg")
+        .attr("xlink:href", "images/Layout1.png")
         .attr("width", width)
         .attr("height", height)
 		.attr("class","col-md-12");
@@ -161,7 +163,7 @@
 		var str = "";
 		var width = "";
 		var height = "";
-		var text = '{"rectangles":[' ;
+		var text = '' ;
 		var count = 0;
 		$(".rectangle").each(function() {
 		    // element is a node with the desired class name
@@ -177,32 +179,38 @@
 		    if(count == 0){
 		    	count++;
 		    }else{
-		    	text= text+",";
+		    	text= text+";";
 		    	count++;
 		    }
 		    text = text + '{"id":\"'+attrId+'\","top":\"'+top+'\","left":\"'+left+'\","width":\"'+width+'\","height":\"'+height+'\"}';
 		   
 		  });
-		text = text + ']}';
+		//text = text + '}';
 		alert(text);
 		$.ajax({
 			    type: "POST",
-			    url: "setupProfile.do",
+			    url: "addLocations.do",
 			    // The key needs to match your method's input parameter (case-sensitive).
 			    data:text,
 			    contentType: "application/json; charset=utf-8",
 			    dataType: "json",
 			    success: function(json){
-			    	console.log(JSON.stringify(json.rectangles));
-			    	   $.each(json.rectangles, function(index, rectangle){
+			    	console.log(JSON.stringify(json.sucess));
+			    	  /* $.each(json.rectangles, function(index, rectangle){
 			    	     alert(rectangle.id);
-			    	   });
+			    	   }); */
+			    	//callIndex();   
 			    },
 			    failure: function(errMsg) {
 			        alert(errMsg);
 			    }
 			});
+		window.location.href = "/NurseWorkflows/index.jsp?setupProfileSuccess=true";
 	});		
+	
+	function callIndex(){
+		window.location.href = "/NurseWorkflows/index.jsp?setupProfileSuccess=true";
+	}
 		 
 	function initDraw(canvas) {
 		var canvasElement = document.getElementById('mapImage');

@@ -13,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.json.*;
 
 /**
@@ -50,21 +52,23 @@ public class ControlServlet extends HttpServlet {
 
 	private void doProcess(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		// TODO Auto-generated method stub
-		/*StringBuilder sb = new StringBuilder();
-	    BufferedReader br = request.getReader();
-	    String str;
-	    while( (str = br.readLine()) != null ){
-	        sb.append(str);
-	    }    
-	    JSONObject jObj = new JSONObject(sb.toString());
-	    Iterator<String> it = jObj.keys(); //gets all the keys
-
-	    while(it.hasNext())
-	    {
-	        String key = (String) it.next(); // get key
-	        Object o = jObj.get(key); // get value
-	        System.out.println(key + " : " +  o); // print the key and value
-	    }*/
+		
+		String requestUri = request.getRequestURI();
+		if(requestUri.equalsIgnoreCase("/NurseWorkflows/addProject.do")){
+			addProject(request,response);
+		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/addParticipantsAjax.do")){
+			addParticipantsAjax(request,response);
+		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/addParticipants.do")){
+			addParticipants(request,response);
+		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/addActivitiesAjax.do")){
+			addActivitiesAjax(request,response);
+		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/addActivities.do")){
+			addActivities(request,response);
+		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/addLocations.do")){
+			addLocations(request,response);
+		}else{
+		
+		
 	    //TODO : We need to save these values in the database, call a database function here
 	    
 	    String param = request.getParameter("getJson");
@@ -100,8 +104,92 @@ public class ControlServlet extends HttpServlet {
 	    //response.setContentType("application/json");
 	    response.getWriter().write(json.toString());
 	    //request.getRequestDispatcher("dataCollection.jsp").forward(request, response);
+		}
 	}
 	
+	private void addProject(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
+		String projName = request.getParameter("projName");
+		String projDesc = request.getParameter("projDesc");
+		String layoutId = request.getParameter("layoutId");
+		
+		HttpSession session = request.getSession(true);
+		session.setAttribute("projName", projName);
+		session.setAttribute("projDesc", projDesc);
+		session.setAttribute("layoutId", layoutId);
+		request.getRequestDispatcher("addParticipants.jsp").forward(request, response);
+	}
 	
-
+	@SuppressWarnings("unchecked")
+	private void addParticipantsAjax(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
+		List<Participant> participants = null;
+		HttpSession session = request.getSession();
+		if(session != null){
+			if(null == session.getAttribute("participants")){
+				participants = new ArrayList<Participant>();
+			}else{
+				participants = (List<Participant>) session.getAttribute("participants");
+			}
+		}
+		
+		Participant participant = new Participant();
+		participant.setPartiName(request.getParameter("partiName"));
+		participant.setPartiDesc(request.getParameter("partiDesc"));
+		
+		participants.add(participant);
+		session.setAttribute("participants", participants);
+	}
+	
+	private void addParticipants(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
+		request.getRequestDispatcher("addActivities.jsp").forward(request, response);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void addActivitiesAjax(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
+		List<Activity> activities = null;
+		HttpSession session = request.getSession();
+		if(session != null){
+			if(null == session.getAttribute("activities")){
+				activities = new ArrayList<Activity>();
+			}else{
+				activities = (List<Activity>) session.getAttribute("activities");
+			}
+		}
+		
+		Activity activity = new Activity();
+		activity.setActivityName(request.getParameter("actiName"));
+		activity.setActivityDesc(request.getParameter("actiDesc"));
+		
+		activities.add(activity);
+		session.setAttribute("activities", activities);
+	}
+	
+	private void addActivities(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
+		request.getRequestDispatcher("addLocations.jsp").forward(request, response);
+	}
+	
+	private void addLocations(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
+		StringBuilder sb = new StringBuilder();
+	    BufferedReader br = request.getReader();
+	    String str;
+	    while( (str = br.readLine()) != null ){
+	        sb.append(str);
+	    }    
+	    
+	    String[] jsonObjects = sb.toString().split(";");
+	    for(String s: jsonObjects){
+	    	JSONObject jObj = new JSONObject(s);
+	    	Iterator<String> it = jObj.keys();
+	    	 while(it.hasNext())
+	 	    {
+	 	        String key = (String) it.next(); // get key
+	 	        Object o = jObj.get(key); // get value
+	 	        System.out.println(key + " : " +  o+"\n"); // print the key and value
+	 	    }
+	    }
+	    JSONObject json = new JSONObject();
+	    json.accumulate("success","true");
+	    response.getWriter().write(json.toString());
+	    /*request.setAttribute("setupProfileSuccess", true);
+	    request.getRequestDispatcher("index.jsp").forward(request, response);*/
+	}
 }

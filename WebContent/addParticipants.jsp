@@ -63,17 +63,17 @@
   			
 		  	
 		  		<div class="well col-md-8 col-md-offset-2">
-		  		<form class="form-horizontal" role="form">
+		  		<form class="form-horizontal" role="form" action="addParticipants.do">
 		  		<div class="form-group">
 		    		<label class="control-label col-sm-6" id="projName">Participant Name:</label>
 		    		<div class="col-sm-4">
-		      			<input type="text" class="form-control" id="name" placeholder="Enter participant's name">
+		      			<input type="text" class="form-control" id="partiName" name="partiName" placeholder="Enter participant's name">
 		    		</div>
 		  		</div>
 		  		<div class="form-group">
 		    		<label class="control-label col-sm-6">Participant Description:</label>
 		    		<div class="col-sm-4"> 
-		    			<textarea class="form-control" rows="5" id="projDesc" placeholder="Enter participant's description.."></textarea>
+		    			<textarea class="form-control" rows="5" id="partiDesc" name="partiDesc" placeholder="Enter participant's description.."></textarea>
 		    		</div>
 		  		</div>
 		  		<div class="form-group">
@@ -87,15 +87,15 @@
 					</div>
 		  		</div>
 		  		<div class="form-group">
-		  			<div class="list-group col-md-offset-6 col-md-6" id="listGroup">
-    					<a href="#" class="list-group-item active">Participants</a>
-    					<a href="#" class="list-group-item">John</a>
-  					</div>
+		  			<ul class="list-group col-md-offset-6 col-md-6" id="listGroup">
+    					<li class="list-group-item active">Participants</li>
+    					<!-- <a href="#" class="list-group-item">John</a> -->
+  					</ul>
 		  		</div>
 		  		<div class="form-group"> 
 		  			<div class="col-md-offset-6 col-md-6">
 		      			<button type="button" class="btn btn-default col-md-4">Cancel</button>
-		      			<button type="button" class="btn btn-success col-md-4" onclick="window.location.href='addActivities.jsp'">Next</button>
+		      			<button type="submit" class="btn btn-success col-md-4">Next</button>
 		    		</div>
 		  		</div>
 				</form>
@@ -103,15 +103,34 @@
 			</div>
 	</body>
 	<script type="text/javascript">
+	 
 	$(document).ready (function(){
         $("#success-alert").hide();
         $("#listGroup").hide();
+	});
 		$("#addButton").click(function(){
-			$("#listGroup").show();
-			$("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
-		    	$("#success-alert").alert('hide');
+			
+			
+			var partiName = $("#partiName").val();
+			var partiDesc = $("#partiDesc").val();
+			$.ajax({
+			    type: "POST",
+			    url: "addParticipantsAjax.do?partiName="+partiName+"&partiDesc="+partiDesc,
+			    success: function(data){
+			    	console.log("added");
+			    	$("#success-alert").show();
+			    	$("#success-alert").fadeOut(4000);
+			    	var listContainer = $('#listGroup');
+			    	listContainer.append('<li class="list-group-item"> ' + partiName + '</li>');
+			    	$("#partiName").val('');
+			    	$("#partiDesc").val('');
+			    	listContainer.show();
+			    },
+			    failure: function(errMsg) {
+			        alert(errMsg);
+			    }
 			});
 		});
-	});
+
 		</script>
 </html>
