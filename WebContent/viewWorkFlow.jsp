@@ -88,7 +88,7 @@
 		      		</div>
 		      		
 		    		<div id="downloadRecordsButton" class="col-md-offset-6 col-md-6" >
-		      			<button type="button" class="btn btn-primary col-md-5">Download Records</button>
+		      			<button type="button" onclick="location.href='floor_Joseph.csv';" class="btn btn-primary col-md-5">Download Records</button>
 		    		</div>
 		    		
 		    		
