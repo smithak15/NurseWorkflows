@@ -25,7 +25,7 @@
 	    				<li><a href="index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		    			<li class="active"><a href="setupProfile.jsp">Setup Profile</a></li>
 		    			<li><a href="dataCollection.do">Data Collection</a></li>
-	    				<li><a href="#menu3">View Workflow</a></li>
+	    				<li><a href="viewWorkFlow.jsp">View Workflow</a></li>
   					</ul>	
   				</div>
   				</div>
@@ -62,7 +62,7 @@
   			
 		  	
 		  		<div class="well col-md-8 col-md-offset-2 row">
-		  		<form class="form-horizontal" role="form" action="addProject.do">
+		  		<form class="form-horizontal" role="form" action="addProject.do" id="pageForm">
 		  		<div class="form-group">
 		    		<label class="control-label col-sm-6" id="projName">Project Name:</label>
 		    		<div class="col-sm-4">
@@ -86,7 +86,7 @@
 		  		</div>
 		  		<div class="form-group"> 
 		  			<div class="col-md-offset-6 col-md-6">
-		      			<button type="button" class="btn btn-default col-md-4">Cancel</button>
+		      			<button type="button" class="btn btn-default col-md-4" id="cancel">Cancel</button>
 		      			<button type="submit" class="btn btn-success col-md-4">Next</button>
 		    		</div>
 		  		</div>
@@ -94,4 +94,10 @@
 				</div>
 			</div>
 	</body>
+	<script type="text/javascript">
+		$("#cancel").click(function(){
+			$("#pageForm").attr("action","cancelFunction.do");
+			$("#pageForm").submit();
+		});
+	</script>
 </html>

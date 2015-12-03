@@ -72,6 +72,8 @@ public class ControlServlet extends HttpServlet {
 			getParticipants(request,response);
 		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/loadLayout.do")){
 			loadLayout(request,response);
+		}else if(requestUri.equalsIgnoreCase("/NurseWorkflows/cancelFunction.do")){
+			cancelFunction(request,response);
 		}else{
 		
 		
@@ -86,7 +88,7 @@ public class ControlServlet extends HttpServlet {
 	    
 	    Rectangle rect = new Rectangle();
 	    rect.setId("1");
-	    rect.setTop(304);
+	    rect.setTop(104);
 	    rect.setLeft(216);
 	    rect.setHeight(99);
 	    rect.setWidth(168);
@@ -95,7 +97,7 @@ public class ControlServlet extends HttpServlet {
 	    
 	    rect = new Rectangle();
 	    rect.setId("2");
-	    rect.setTop(434);
+	    rect.setTop(200);
 	    rect.setLeft(593);
 	    rect.setHeight(65);
 	    rect.setWidth(95);
@@ -270,5 +272,13 @@ public class ControlServlet extends HttpServlet {
 	private void loadLayout(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		//DatabaseConnector dao = new DatabaseConnector();
 		request.getRequestDispatcher("dataCollectionTwo.jsp").forward(request, response);
+	}
+	
+	private void cancelFunction(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+		    session.invalidate();
+		}
+		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
 }

@@ -46,11 +46,9 @@
                    </div> -->
                      <div class="col-sm-3">
                    <select class="form-control">
-                        <option value="one">One</option>
-                        <option value="two">Two</option>
-                        <option value="three">Three</option>
-                        <option value="four">Four</option>
-                        <option value="five">Five</option>
+                        <option value="one">Select</option>
+                        <option value="two">Floor 1</option>
+                        <option value="two">Floor 2</option>
                    </select>
                    </div>
 		  		</div>
@@ -67,11 +65,8 @@
                    </div> -->
                     <div class="col-sm-3">
                    <select class="form-control">
-                        <option value="one">One</option>
-                        <option value="two">Two</option>
-                        <option value="three">Three</option>
-                        <option value="four">Four</option>
-                        <option value="five">Five</option>
+                        <option value="one">Select</option>
+                        <option value="two">Joseph</option>
                    </select>
                    </div>
 		  		</div>
@@ -84,11 +79,11 @@
 		  		<div class="form-group" >
 		  		
 		  		    <div id="filelink"  class="col-md-offset-6 col-md-5" >
-		    		    <label class="control-label col-sm-5">floor1_Joseph</label>
+		    		    <label class="control-label col-sm-5">floor1_Joseph.csv</label>
 		      		</div>
 		      		
 		    		<div id="downloadRecordsButton" class="col-md-offset-6 col-md-6" >
-		      			<button type="button" onclick="location.href='floor_Joseph.csv';" class="btn btn-primary col-md-5">Download Records</button>
+		      			<button type="button" onclick="location.href='floor1_Joseph.csv';" class="btn btn-primary col-md-5">Download Records</button>
 		    		</div>
 		    		
 		    		

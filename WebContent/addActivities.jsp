@@ -26,7 +26,7 @@
 	    				<li><a href="index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		    			<li class="active"><a href="setupProfile.jsp">Setup Profile</a></li>
 		    			<li><a href="dataCollection.do">Data Collection</a></li>
-	    				<li><a href="#menu3">View Workflow</a></li>
+	    				<li><a href="viewWorkFlow.jsp">View Workflow</a></li>
   					</ul>	
   				</div>
   				</div>
@@ -60,8 +60,34 @@
                   <div class="bs-wizard-info text-center">Add Locations</div>
                 </div>
             </div>
+            
+            <div class="modal fade" id="myModal" role="dialog">
+			    <div class="modal-dialog">
+			    
+			      <!-- Modal content-->
+			      <div class="modal-content">
+			      	<div class="modal-header">
+			          <button type="button" class="close" id="close" data-dismiss="modal">&times;</button>
+			          <div id="success-alert" class="alert alert-success">
+  							<strong>Success!</strong> You have successfully added the activity.
+						</div>
+			        </div>
+			      	<div class="modal-body">
+						<ul class="list-group" id="listGroup">
+    						<li class="list-group-item active">Activities</li>
+    						<!-- <a href="#" class="list-group-item">John</a> -->
+  						</ul>
+			        </div>
+			        <div class="modal-footer">
+			          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			        </div>
+			      </div>
+			   </div>
+			</div>
+            
 		  		<div class="well col-md-8 col-md-offset-2 row">
-		  		<form class="form-horizontal" role="form" action="addActivities.do">
+		  		<form class="form-horizontal" role="form" action="addActivities.do" id="pageForm">
+		  		
 		  		<div class="form-group">
 		    		<label class="control-label col-sm-6" id="projName">Activity Name:</label>
 		    		<div class="col-sm-4">
@@ -79,19 +105,9 @@
 		      			<button type="button" class="btn btn-danger col-md-4">Add</button>
 		    		</div>
 		  		</div>
-		  		<div class="form-group" id="successGroup">
-		  			<div id="success-alert" class="alert alert-success col-md-offset-6 col-md-6">
-  						<strong>Success!</strong> You have successfully added the activity.
-					</div>
-		  		</div>
-		  		<div class="form-group">
-		  			<div class="list-group col-md-offset-6 col-md-6" id="listGroup">
-    					<a href="#" class="list-group-item active">Activities</a>
-  					</div>
-		  		</div>
 		  		<div class="form-group"> 
 		  			<div class="col-md-offset-6 col-md-6">
-		      			<button type="button" class="btn btn-default col-md-4">Cancel</button>
+		      			<button type="button" class="btn btn-default col-md-4" id="cancel">Cancel</button>
 		      			<button type="submit" class="btn btn-success col-md-4">Next</button>
 		    		</div>
 		  		</div>
@@ -114,8 +130,8 @@
 			    url: "addActivitiesAjax.do?actiName="+actiName+"&actiDesc="+actiDesc,
 			    success: function(data){
 			    	console.log("added");
-			    	$("#success-alert").show();
-			    	$("#success-alert").fadeOut(4000);
+			    	$("#myModal").modal("show");
+			    	//$("#success-alert").fadeOut(4000);
 			    	var listContainer = $('#listGroup');
 			    	listContainer.append('<li class="list-group-item"> ' + actiName + '</li>');
 			    	$("#actiName").val('');
@@ -126,6 +142,11 @@
 			        alert(errMsg);
 			    }
 			});
+		});
+		
+		$("#cancel").click(function(){
+			$("#pageForm").attr("action","cancelFunction.do");
+			$("#pageForm").submit();
 		});
 		</script>
 </html>

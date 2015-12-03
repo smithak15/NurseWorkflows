@@ -9,8 +9,28 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/jquery.zoomooz.min.js"></script>
 		<style>
-			
+			.zoomContainer {
+	margin:0;
+    padding:0;
+    width:808px;
+	height:520px;
+    position:relative;
+}
+
+.zoomViewport {
+	margin:0;
+    padding:0;
+    width:808px;
+	height:520px;
+	border:1px solid #ccc;
+	background-color: white;
+	overflow:hidden;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:1em;
+}
 			.mapImage{ /* sets width and height for the floorplan image */
 				width:808;
 				height:520;
@@ -27,6 +47,7 @@
     			z-index: 2;
     			display: inline-block;
 			}
+			
 		</style>
 	</head>
 	<body>
@@ -40,14 +61,55 @@
 	    				<li><a href="index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		    			<li><a href="setupProfile.jsp">Setup Profile</a></li>
 		    			<li class="active"><a href="dataCollection.do">Data Collection</a></li>
-	    				<li><a href="#menu3">View Workflow</a></li>
+	    				<li><a href="viewWorkFlow.jsp">View Workflow</a></li>
   					</ul>	
   				</div>
   			</div>
+  			<br/>
   			<div class="row">
-  					<div id="canvas">
-  					
+  				
+  				<div class="zoomViewport" id="viewPort">
+  					<div class="zoomContainer" id="container">
+	  					<div id="canvas">
+	  						<img id="mapImage" src="images/Floor1.jpg" width="808" height="520" class="center-block"/>
+		  				</div>
   					</div>
+	  			</div>
+	  		
+	  		</div>
+  			
+  			
+  			<div id="myModal" style="display:none;">
+  				<p>Click on an activity when the nurse starts performing it</p>
+						<table class="table table-bordered">
+						    <thead>
+						      <tr>
+						        <th>Activities</th>
+						        <th>Record Time</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+						      <tr>
+						        <td>
+						        <button type="button" class="btn btn-default" id="btn3">Take patient blood samples</button>
+						        <span id="btn3ok" class="glyphicon glyphicon-ok" style="display:none"></span>
+						        </td>
+						        <td>
+						        	<button type="button" class="btn btn-default" id="btn3">Start</button>
+						        	<button type="button" class="btn btn-default" id="btn3">Stop</button>
+						        </td>
+						      </tr>
+						      <tr>
+						        <td><button type="button" class="btn btn-default" id="btn4">Collect blood sample report</button>
+						        <span id="btn4ok" class="glyphicon glyphicon-ok" style="display:none"></span>
+						        </td>
+						        <td>
+						        	<button type="button" class="btn btn-default" id="btn3">Start</button>
+						        	<button type="button" class="btn btn-default" id="btn3">Stop</button>
+						        </td>
+						      </tr>
+						    </tbody>
+						  </table>
   			</div>
   			
   			<div class="modal fade" id="myModal_1" role="dialog">
@@ -152,7 +214,7 @@
  			 </div>
 		</div>
   			
-  		</div>
+  		
 	</body>
 	<script type="text/javascript">
 	var width = 808; //height and width for svg
@@ -184,17 +246,10 @@
 	});
 	
 	$(document).ready (function(){
+		$.zoomooz.setup({root:$("#container")});
 		 // when document is ready, create svg element and append canvas div and load map image and append to it
-			svg = d3.select("body").select("#canvas").append("svg").attr("width", width).attr("height", height);
-			var imgs = svg.selectAll("image").data([0])
-			.enter()
-	        .append("svg:image")
-	        .attr("id","mapImage")
-	        .attr("xlink:href", "images/Floor2.jpg")
-	        .attr("width", width)
-	        .attr("height", height)
-			.attr("class","col-md-12");
-			
+			svg = d3.select("body").select("#canvas").append("svg");
+						
 			var canvas = document.getElementById('canvas');
 			var canvasElement = document.getElementById('mapImage');
 	    	var position = canvasElement.getBoundingClientRect();
@@ -214,21 +269,35 @@
 		    	     element = document.createElement('button');
 		    	     element.type = "button";
 		    	     element.id = rectangle.id;
-		    	     element.className = 'rectangle';
-		    	     $(element).attr("data-toggle","modal");
-		    	     $(element).attr("data-target","#myModal_"+rectangle.id);
+		    	     element.className = 'rectangle zoomTarget';
+		    	    /* $(element).attr("data-toggle","modal");
+		    	     $(element).attr("data-target","#myModal_"+rectangle.id);  */
+		    	    // $(element).attr("data-closeclick",true);
 		    	     element.style.left = rectangle.left+"px";
 		    	     element.style.top = (rectangle.top + canvasy )+ "px";
 		    	     element.style.width = rectangle.width + "px";
 		    	     element.style.height = rectangle.height + "px";
 		    	     element.innerHTML = rectangle.location;
 		    	     canvas.appendChild(element);
+		    	     $('#'+element.id).click(function(evt) {
+		    	    	 	evt.stopPropagation();
+		    	         	$("#viewPort").css("height","200px");
+		    	         	$(this).zoomTo({duration:1000, targetsize:0.8});
+		    	         	$("#myModal").css("display","block");
+		    	     });  
 		    	   });
+		    	   $("#mapImage").click(function(evt) {
+						evt.stopPropagation();
+						$("#viewPort").css("height","520px");
+						$("#container").zoomTo({targetsize:1.0});
+						$("#myModal").css("display","none");
+					});
 		    },
 		    failure: function(errMsg) {
 		        alert(errMsg);
 		    }
 		});
 	});
+	
 	</script>
 </html>

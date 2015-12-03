@@ -9,6 +9,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<script src="js/jquery.zoomooz.min.js"></script>
 		<style>
 			.center_div{
  			   	margin: 0 auto;
@@ -21,8 +22,8 @@
 			.rectangle { /* style for the rectangles to be drawn */
     			border: 4px solid #FF0000;
     			position: absolute;
-    		
-    			background : rgba(242,242,242,0.7);
+    			color : white;
+    			background : rgba(0,0,0,0.6);
 			}
 			#svg { /* style for svg */
     			position: absolute;
@@ -44,7 +45,7 @@
 	    				<li><a href="index.jsp"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		    			<li class="active"><a href="setupProfile.jsp">Setup Profile</a></li>
 		    			<li><a href="dataCollection.do">Data Collection</a></li>
-	    				<li><a href="#menu3">View Workflow</a></li>
+	    				<li><a href="viewWorkFlow.jsp">View Workflow</a></li>
   					</ul>	
   				</div>
   			</div>
@@ -83,21 +84,29 @@
 			 <!-- <div id="coords" class="col-md-2">
   					Text
 			   </div> -->  
-			   
+			<div class="well">
 			<%-- Draw and Clear buttons row --%>
 			<div class="row">
-				<div class="col-md-4 col-md-offset-4">
+				<div class="col-md-8 col-md-offset-2">
 	  				<ul class="nav nav-pills nav-justified">
 	        			<li>
-		        			<a id="drawButton" href="#" class="btn btn-info btn-lg col-sm-offset-1">
+		        			<a id="drawButton" href="#" class="btn btn-default btn-lg col-sm-offset-1">
 		          				<span class="glyphicon glyphicon-pencil"></span> Draw 
 		        			</a>
 		        		</li>
 					    <li>
-		        			<a id="clearButton" href="#" class="btn btn-info btn-lg col-sm-offset-1">
+		        			<a id="clearButton" href="#" class="btn btn-default btn-lg col-sm-offset-1">
 		          				<span class="glyphicon glyphicon-erase"></span> Clear 
 		        			</a>
 		        		</li>
+		        		<li>
+	        				<a id="cancel" href="#" class="btn btn-default btn-lg col-sm-offset-1">Cancel 
+	        				</a>
+	        			</li>
+				        <li>
+	        				<a href="#" id="finish" class="btn btn-success btn-lg col-sm-offset-1">Finish 
+	        				</a>
+	        			</li>
 				   	</ul>
 				</div>
 			</div>
@@ -105,25 +114,13 @@
   			<%-- Floor plan image display area --%>	
   			<div class="row">
   					<div id="canvas">
-  					
+  						
+  					<img id="mapImage" src="images/Floor1.jpg" width="808" height="520" class="center-block" ondragstart="return false;"/>
+  						
   					</div>
   			</div>
-  			
-  			<%-- Cancel and Finish button rows --%>			
-  			<div class="row">
-				<div class="col-md-4 col-md-offset-4">
-  					<ul class="nav nav-pills nav-justified">
-        				<li>
-	        				<a id="drawButton" href="#" class="btn btn-default btn-lg col-sm-offset-1">Cancel 
-	        				</a>
-	        			</li>
-				        <li>
-	        				<a href="#" id="finish" class="btn btn-success btn-lg col-sm-offset-1">Finish 
-	        				</a>
-	        			</li>
-			   		</ul>
-			   </div>
-			</div>
+  			</div>
+  			<form id="pageForm"></form>
 		</div>
 	</body>
 	<script type="text/javascript">
@@ -135,21 +132,27 @@
 	var canvasy;
 	var rectangleId = 0;
 	$(document).ready (function(){ // when document is ready, create svg element and append canvas div and load map image and append to it
-		svg = d3.select("body").select("#canvas").append("svg").attr("width", width).attr("height", height);
-		var imgs = svg.selectAll("image").data([0])
+		svg = d3.select("body").select("#canvas").append("svg");
+		/* var imgs = svg.selectAll("image").data([0])
 		.enter()
         .append("svg:image")
         .attr("id","mapImage")
-        .attr("xlink:href", "images/Layout1.png")
+        .attr("xlink:href", "images/Floor1.jpg")
         .attr("width", width)
         .attr("height", height)
-		.attr("class","col-md-12");
-        
+		.attr("class","col-md-12").attr("onmousedown","event.preventDefault();");    */    
 	});
+	
+	
 	//On click of draw button initialize drawing function
 	$("#drawButton").click(function(){
 		initDraw(document.getElementById('canvas'));
 	});	
+	
+	$("#cancel").click(function(){
+		$("#pageForm").attr("action","cancelFunction.do");
+		$("#pageForm").submit();
+	});
 	
 	$("#clearButton").click(function(){
 		$(".rectangle").each(function() {
@@ -176,10 +179,11 @@
 		    top = top - canvasy;
 		    left = $(this).css("left");
 		    left = parseInt(left);
+		    left = left - canvasx;
 		    width = parseInt($(this).css("width"));
 		    height = parseInt($(this).css("height"));
 		    var attrId = $(this).attr("id");
-		    locName = $("#rectangleText_"+attrId).val();
+		    locName = $("#locName_"+attrId).html();
 		    if(count == 0){
 		    	count++;
 		    }else{
@@ -190,7 +194,7 @@
 		   
 		  });
 		//text = text + '}';
-		//alert(text);
+		alert(text);
 		$.ajax({
 			    type: "POST",
 			    url: "addLocations.do",
@@ -243,7 +247,9 @@
 	    };
 	    var element = null;
 
+	    var moving = false;
 	    canvas.onmousemove = function (e) {
+	    	moving = true;
 	        setMousePosition(e);
 	         if (element !== null) {
 	            element.style.width = Math.abs(mouse.absX - mouse.startX) + 'px'; //current mouse position - start position 
@@ -251,31 +257,12 @@
 	            element.style.left = (mouse.absX - mouse.startX < 0) ? mouse.absX + 'px' : mouse.startX + 'px';
 	            element.style.top = (mouse.absY - mouse.startY < 0) ? mouse.absY + 'px' : mouse.startY + 'px';
 	        } 
-	         canvas.style.cursor = "crosshair"; //change cursor style
+	         canvasElement.style.cursor = "crosshair"; //change cursor style
 	    }
 
-	    canvas.onclick = function (e) { //any click on top of the floor plan
-	    	
-	        if (element !== null) { //if element not equal to null means, the rectangle is already being drawn
-	        	var div = document.createElement('div');
-	        	div.innerHTML = "Enter Location Name:";
-	        	element.appendChild(div);
-	        	var input = document.createElement('input'); //add textbox into rectangle
-	            input.type = "text";
-	        	input.id="rectangleText_" + rectangleId;
-	            $("#"+input.id).attr("placeholder","Enter location");
-	            div.appendChild(input);
-	            input.focus();
-	           	/* var htmlCode = 'Enter Location name: <input type="text" id="rectangleText_'+element.id+'" value="" autofocus></input>';
-	            $("#"+element.id).tooltip({title: htmlCode, html: true, placement: "right"}).tooltip('show');
-	            $('[id^=tooltip]').each(function(){
-	            	$("#canvas").append($(this));
-	            }); */
-	            
-	            element = null; //make the element null
-	            canvas.style.cursor = "default"; //reset cursor
-	            console.log("finsihed.");
-	        } else { //if rectangle has not been drawn yet
+	    $("#canvas").on('dragstart',function (e) { //any click on top of the floor plan
+	    	if(moving){
+	         //if rectangle has not been drawn yet
 	            console.log("begun.");
 	            mouse.startX = mouse.absX; //starting point coordinates = current mouse position
 	            mouse.startY = mouse.absY;
@@ -288,18 +275,53 @@
 	            element.id = rectangleId;
 	            canvas.appendChild(element); //append rectangle into image
 	        }
+	    	
+	    });
+	    
+	    canvas.onmouseup = function (e) {
+	    	if (element !== null) { //if element not equal to null means, the rectangle is already being drawn
+	        	var div = document.createElement('div');
+	        	div.innerHTML = "Enter Location Name:";
+	        	div.id = "locName_" + rectangleId;
+	        	element.appendChild(div);
+	        	var input = document.createElement('input'); //add textbox into rectangle
+	            input.type = "text";
+	        	input.id="rectangleText_" + rectangleId;
+	        	input.style.color = "black";
+	            div.appendChild(input);
+	            input.focus();
+	            var locName;
+	            $("#"+input.id).keydown(function(e){
+		    		if (e.keyCode == 13) {
+		    			locName = $("#"+input.id).val();
+		    			div.removeChild(input);
+		    			div.innerHTML = locName;
+			    	}
+		    	})
+	           	/* var htmlCode = 'Enter Location name: <input type="text" id="rectangleText_'+element.id+'" value="" autofocus></input>';
+	            $("#"+element.id).tooltip({title: htmlCode, html: true, placement: "right"}).tooltip('show');
+	            $('[id^=tooltip]').each(function(){
+	            	$("#canvas").append($(this));
+	            }); */
+	            
+	            element = null; //make the element null
+	            canvas.style.cursor = "default"; //reset cursor
+	            console.log("finsihed.");
+	        } 
 	    }
 	    
+	    
+	    
 	    //Function to display coordinates. Leave it commented
-	     canvas.addEventListener('mousemove', function(e){
+	    /*  canvas.addEventListener('mousemove', function(e){
 	    	var canvasElement = document.getElementById('mapImage');
 	    	var position = canvasElement.getBoundingClientRect();
 	    	var canvasx = position.left;
 	    	var canvasy = position.top;
 		document.getElementById('coords').innerHTML = Math.round(mouse.absX) + ', ' + Math.round(mouse.absY)+','+Math.round(canvasx)+', '+Math.round(canvasy);
-		}, false); 
-	}
+		}, false);  */
 	
+	}
 	</script>
 </html>
   
