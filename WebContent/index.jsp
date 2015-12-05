@@ -36,6 +36,11 @@
 	  						<strong>Success!</strong> You have successfully created a profile.
 					</div>
 				</c:if>
+				<c:if test="${param.dataCollectionSuccess eq true}">
+	  				<div id="success-alert" class="alert alert-success col-md-offset-2 col-md-6 row">
+	  						<strong>Success!</strong> You have successfully collected data.
+					</div>
+				</c:if>
   				<div class="well col-md-8 col-md-offset-2 row">
   				<p style="font-size:120%">Hello There!</p>
   				 <p style="font-size:120%">  This application is used for recording work flow of nurses over a period of time and obtaining the workflow information.</p>

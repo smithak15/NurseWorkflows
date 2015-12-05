@@ -81,9 +81,9 @@
                 </div>
 			</div>
 			<%-- Div which displayes coordinates of mouse. Let it be commented --%>
-			 <!-- <div id="coords" class="col-md-2">
+			 <!--  <div id="coords" class="col-md-2">
   					Text
-			   </div> -->  
+			   </div>  --> 
 			<div class="well">
 			<%-- Draw and Clear buttons row --%>
 			<div class="row">
@@ -194,7 +194,7 @@
 		   
 		  });
 		//text = text + '}';
-		alert(text);
+		//alert(text);
 		$.ajax({
 			    type: "POST",
 			    url: "addLocations.do",
@@ -313,13 +313,13 @@
 	    
 	    
 	    //Function to display coordinates. Leave it commented
-	    /*  canvas.addEventListener('mousemove', function(e){
+	      /* canvas.addEventListener('mousemove', function(e){
 	    	var canvasElement = document.getElementById('mapImage');
 	    	var position = canvasElement.getBoundingClientRect();
 	    	var canvasx = position.left;
 	    	var canvasy = position.top;
 		document.getElementById('coords').innerHTML = Math.round(mouse.absX) + ', ' + Math.round(mouse.absY)+','+Math.round(canvasx)+', '+Math.round(canvasy);
-		}, false);  */
+		}, false);   */
 	
 	}
 	</script>

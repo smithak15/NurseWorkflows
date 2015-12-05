@@ -11,12 +11,23 @@
 		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<script type="text/javascript" src="js/jquery.zoomooz.min.js"></script>
 		<style>
-			.zoomContainer {
+		
+		 .output {
+		 width:120px;
+		 height:25px;
+		 background-color:#CCC;
+		 border:1px solid #999;
+		 
+		 }
+		 
+		  .zoomContainer {
 	margin:0;
     padding:0;
     width:808px;
 	height:520px;
     position:relative;
+    
+   
 }
 
 .zoomViewport {
@@ -38,7 +49,8 @@
 			.rectangle { /* style for the rectangles to be drawn */
     			border: 4px solid #FF0000;
     			position: absolute;
-    			background : rgba(242,242,242,0.7);
+    			color : white;
+    			background : rgba(0,0,0,0.6);
 			}
 			#svg { /* style for svg */
     			position: absolute;
@@ -77,144 +89,142 @@
 	  			</div>
 	  		
 	  		</div>
+	  		
+	  		<div class="row" id="buttonsRow">
+	  		<br>
+	  		<br>
+	  			<div class="col-md-8 col-md-offset-2">
+	  				<ul class="nav nav-pills nav-justified">
+	        			<li>
+	        				<a id="cancel" href="#" class="btn btn-default btn-lg col-sm-offset-4">Cancel 
+	        				</a>
+	        			</li>
+	        			<li>
+	        				<a href="#" id="finish" class="btn btn-success btn-lg col-sm-offset-4">Finish 
+	        				</a>
+	        			</li>
+	        		</ul>
+	        	</div>
+	        	<br>
+	  		<br>
+	  		</div>
   			
   			
-  			<div id="myModal" style="display:none;">
-  				<p>Click on an activity when the nurse starts performing it</p>
+  			<div id="myModal1" style="display:none;" class="row well">
+ 
 						<table class="table table-bordered">
 						    <thead>
 						      <tr>
 						        <th>Activities</th>
 						        <th>Record Time</th>
+						        <th>Time recorded</th>
 						      </tr>
 						    </thead>
 						    <tbody>
 						      <tr>
 						        <td>
-						        <button type="button" class="btn btn-default" id="btn3">Take patient blood samples</button>
-						        <span id="btn3ok" class="glyphicon glyphicon-ok" style="display:none"></span>
+						        Take patient vitals
 						        </td>
 						        <td>
-						        	<button type="button" class="btn btn-default" id="btn3">Start</button>
-						        	<button type="button" class="btn btn-default" id="btn3">Stop</button>
+						        	<button type="button" class="btn btn-default" id="btnStart1" >Start</button>
+						        	<button type="button" class="btn btn-default" id="btnStop1">Stop</button>
+						        	
+						        </td>
+						        <td>
+						             
+						            <p id="output1" class="output"></p>
+						            
 						        </td>
 						      </tr>
 						      <tr>
-						        <td><button type="button" class="btn btn-default" id="btn4">Collect blood sample report</button>
-						        <span id="btn4ok" class="glyphicon glyphicon-ok" style="display:none"></span>
+						        <td>Talk to the patient and record symptoms
 						        </td>
 						        <td>
-						        	<button type="button" class="btn btn-default" id="btn3">Start</button>
-						        	<button type="button" class="btn btn-default" id="btn3">Stop</button>
+						        	<button type="button" class="btn btn-default" id="btnStart2">Start</button>
+						        	<button type="button" class="btn btn-default" id="btnStop2">Stop</button>
 						        </td>
+						         <td>
+						             
+						         <p id="output2" class="output"></p>
+						            
+						        </td>
+						      </tr>
+						      <tr>
+						      <td colspan="3">
+						      	<button type="button" class="btn btn-danger col-sm-offset-6 col-sm-2" id="done">Done</button>
+						      </td>
 						      </tr>
 						    </tbody>
 						  </table>
+						  
   			</div>
-  			
-  			<div class="modal fade" id="myModal_1" role="dialog">
-			    <div class="modal-dialog">
-			    
-			      <!-- Modal content-->
-			      <div class="modal-content">
-			        <div class="modal-header">
-			          <button type="button" class="close" data-dismiss="modal">&times;</button>
-			          <h4 class="modal-title">Track Activities</h4>
-			        </div>
-			        <div class="modal-body">
-			          <p>Click on an activity when the nurse starts performing it</p>
+  			<div id="myModal2" style="display:none;" class="row well">
+  				
 						<table class="table table-bordered">
 						    <thead>
 						      <tr>
 						        <th>Activities</th>
-						        <th>Location</th>
-						      </tr>
-						    </thead>
-						    <tbody>
-						      <tr>
-						        <td id="td1">
-						        	<button type="button" class="btn btn-default" id="btn1">Prepare for surgery</button>
-						        	<span id="btn1ok" class="glyphicon glyphicon-ok" style="display:none"></span>
-						        </td>
-						        <td rowspan="2">Surgery
-						        <div id="bowlG" style="display:none">
-									<div id="bowl_ringG">
-										<div class="ball_holderG">
-											<div class="ballG">
-											</div>
-										</div>
-									</div>
-								</div>
-						        </td>
-						      </tr>
-						      <tr>
-						        <td id="td2">
-						        <button type="button" class="btn btn-default" id="btn2">Assist Surgery</button>
-						        </td>
-						      </tr>
-						    </tbody>
-						  </table>
-			        </div>
-			        <div class="modal-footer">
-			          <button type="button" id="closeBtn" class="btn btn-danger" data-dismiss="modal">Close</button>
-			        </div>
-			      </div>
-			      
-			    </div>
- 			 </div>
-  			 <div class="modal fade" id="myModal_2" role="dialog">
-			    <div class="modal-dialog">
-			    
-			      <!-- Modal content-->
-			      <div class="modal-content">
-			        <div class="modal-header">
-			          <button type="button" class="close" id="close" data-dismiss="modal">&times;</button>
-			          <h4 class="modal-title">Track Activities</h4>
-			        </div>
-			        <div class="modal-body">
-			          <p>Click on an activity when the nurse starts performing it</p>
-						<table class="table table-bordered">
-						    <thead>
-						      <tr>
-						        <th>Activities</th>
-						        <th>Location</th>
+						        <th>Record Time</th>
+						        <th>Time recorded</th>
 						      </tr>
 						    </thead>
 						    <tbody>
 						      <tr>
 						        <td>
-						        <button type="button" class="btn btn-default" id="btn3">Take patient blood samples</button>
-						        <span id="btn3ok" class="glyphicon glyphicon-ok" style="display:none"></span>
+						        Pre-op preperation
 						        </td>
-						        <td rowspan="2">Laboratory
-						        <div id="bow2G" style="display:none">
-									<div id="bowl_ringG">
-										<div class="ball_holderG">
-											<div class="ballG">
-											</div>
-										</div>
-									</div>
-								</div>
+						        <td>
+						        	<button type="button" class="btn btn-default" id="btnStart3" >Start</button>
+						        	<button type="button" class="btn btn-default" id="btnStop3">Stop</button>
+						        	
+						        </td>
+						        <td>
+						             
+						            <p id="output3" class="output"></p>
+						            
 						        </td>
 						      </tr>
 						      <tr>
-						        <td><button type="button" class="btn btn-default" id="btn4">Collect blood sample report</button>
-						        <span id="btn4ok" class="glyphicon glyphicon-ok" style="display:none"></span>
+						        <td>Surgery support
 						        </td>
+						        <td>
+						        	<button type="button" class="btn btn-default" id="btnStart4">Start</button>
+						        	<button type="button" class="btn btn-default" id="btnStop4">Stop</button>
+						        </td>
+						         <td>
+						             
+						         <p id="output4" class="output"></p>
+						            
+						        </td>
+						      </tr>
+						      <tr>
+						      <td colspan="3">
+						      	<button type="button" class="btn btn-danger col-sm-offset-6 col-sm-2" id="done2">Done</button>
+						      </td>
 						      </tr>
 						    </tbody>
 						  </table>
-			        </div>
-			        <div class="modal-footer">
-			          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-			        </div>
-			      </div>
-			      
-			    </div>
- 			 </div>
+						  
+  			</div>
 		</div>
   			
-  		
+  		<div class="modal fade" id="message" role="dialog">
+  			<div class="modal-dialog">
+			       <div class="modal-content">
+			       		<div class="modal-body">
+	  						<button type="button" class="close" id="close" data-dismiss="modal">&times;</button>
+				          	<div id="danger-alert" class="alert alert-danger">
+	  							<strong>Warning!</strong> Please record data for at least one activity.
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+  		</div>
+  		<form id="pageForm" action="">
+  		</form>
 	</body>
 	<script type="text/javascript">
 	var width = 808; //height and width for svg
@@ -223,29 +233,133 @@
 	var canvasx;
 	var canvasy;
 	
-	$("#btn1").click(function(){
-		$("#bowlG").hide();
-		$("#bowlG").fadeIn(3000);
-	});
-	$("#btn2").click(function(){
-		$("#btn1").attr("disabled","true");
-		$("#btn1ok").show(1000);
-		$("#bowlG").hide();
-		$("#bowlG").fadeIn(3000);
+	var time1=0;
+	var running1 = 0;
+	
+	var time2=0;
+	var running2 = 0;
+	
+	var time3=0;
+	var running3 = 0;
+	
+	var time4=0;
+	var running4 = 0;
+	
+	var started = false;
+	
+	$("#btnStart1").click(function(){
+		started = true;
+	time2=0;
+	running2 = 0;
+	if(running1 == 0){
+		running1 = 1;
+		increment1();
+	}
+	}); 
+	
+	function increment1(){
+		if(running1 ==1){
+		setTimeout(function(){
+			time1++;
+			var mins= Math.floor(time1/10/60);
+			var secs= Math.floor(time1/10);
+			var tenths= time1 % 10;
+			document.getElementById("output1").innerHTML = mins + ":" + secs + ":" + tenths;
+			increment1();
+		},100);
+		}
+	}
+	
+	$("#btnStop1").click(function(){
+		running1 = 0;
+		
 	});
 	
-	$("#btn3").click(function(){
+	$("#btnStart2").click(function(){
+		started = true;
+		time1=0;
+		running1 = 0;
+		if(running2 == 0){
+			running2 = 1;
+			increment2();
+		}
+	});
+	$("#btnStop2").click(function(){
+		
+		running2 = 0;
+		$("#btn4").attr("disabled","true");
 		$("#bow2G").hide();
 		$("#bow2G").fadeIn(3000);
 	});
-	$("#btn4").click(function(){
-		$("#btn3").attr("disabled","true");
-		$("#btn3ok").show(1000);
-		$("#bow2G").hide();
-		$("#bow2G").fadeIn(3000);
+	
+	function increment2(){
+		if(running2 ==1){
+		setTimeout(function(){
+			time2++;
+			var mins= Math.floor(time2/10/60);
+			var secs= Math.floor(time2/10);
+			var tenths= time2 % 10;
+			document.getElementById("output2").innerHTML = mins + ":" + secs + ":" + tenths;
+			increment2();
+		},100);
+		}
+	}
+	
+	$("#btnStart3").click(function(){
+		started = true;
+		time3=0;
+		running3 = 0;
+		if(running3 == 0){
+			running3 = 1;
+			increment3();
+		}
+		}); 
+	
+	function increment3(){
+		if(running3 ==1){
+		setTimeout(function(){
+			time3++;
+			var mins= Math.floor(time3/10/60);
+			var secs= Math.floor(time3/10);
+			var tenths= time3 % 10;
+			document.getElementById("output3").innerHTML = mins + ":" + secs + ":" + tenths;
+			increment3();
+		},100);
+		}
+	}
+	$("#btnStop3").click(function(){
+		running3 = 0;
+	});
+	
+	$("#btnStart4").click(function(){
+		started = true;
+		time4=0;
+		running4 = 0;
+		if(running4 == 0){
+			running4 = 1;
+			increment4();
+		}
+		}); 
+	
+	function increment4(){
+		if(running4 ==1){
+		setTimeout(function(){
+			time4++;
+			var mins= Math.floor(time4/10/60);
+			var secs= Math.floor(time4/10);
+			var tenths= time4 % 10;
+			document.getElementById("output4").innerHTML = mins + ":" + secs + ":" + tenths;
+			increment4();
+		},100);
+		}
+	}
+	$("#btnStop4").click(function(){
+		running4 = 0;
+		
 	});
 	
 	$(document).ready (function(){
+		//$("#message").hide();
 		$.zoomooz.setup({root:$("#container")});
 		 // when document is ready, create svg element and append canvas div and load map image and append to it
 			svg = d3.select("body").select("#canvas").append("svg");
@@ -270,28 +384,23 @@
 		    	     element.type = "button";
 		    	     element.id = rectangle.id;
 		    	     element.className = 'rectangle zoomTarget';
-		    	    /* $(element).attr("data-toggle","modal");
-		    	     $(element).attr("data-target","#myModal_"+rectangle.id);  */
-		    	    // $(element).attr("data-closeclick",true);
 		    	     element.style.left = rectangle.left+"px";
-		    	     element.style.top = (rectangle.top + canvasy )+ "px";
+		    	     element.style.top = (rectangle.top)+ "px";
 		    	     element.style.width = rectangle.width + "px";
 		    	     element.style.height = rectangle.height + "px";
 		    	     element.innerHTML = rectangle.location;
 		    	     canvas.appendChild(element);
 		    	     $('#'+element.id).click(function(evt) {
+		    	    	 var id = $(this).attr("id");
 		    	    	 	evt.stopPropagation();
 		    	         	$("#viewPort").css("height","200px");
 		    	         	$(this).zoomTo({duration:1000, targetsize:0.8});
-		    	         	$("#myModal").css("display","block");
+		    	         	$("#myModal"+id).css("display","block");
+		    	         	$("#buttonsRow").css("display","none");
+		    	         	$(this).css("background","rgba(255,131,121,0.9)");
+		    	         	$(this).css("color","black")
 		    	     });  
 		    	   });
-		    	   $("#mapImage").click(function(evt) {
-						evt.stopPropagation();
-						$("#viewPort").css("height","520px");
-						$("#container").zoomTo({targetsize:1.0});
-						$("#myModal").css("display","none");
-					});
 		    },
 		    failure: function(errMsg) {
 		        alert(errMsg);
@@ -299,5 +408,34 @@
 		});
 	});
 	
+	$("#done").click(function(evt) {
+		evt.stopPropagation();
+		$("#viewPort").css("height","520px");
+		$("#container").zoomTo({targetsize:1.0});
+		$("#myModal1").css("display","none");
+		//$("#myModal2").css("display","none");
+		$("#buttonsRow").css("display","block");
+	});
+	
+	$("#done2").click(function(evt) {
+		evt.stopPropagation();
+		$("#viewPort").css("height","520px");
+		$("#container").zoomTo({targetsize:1.0});
+		//$("#myModal1").css("display","none");
+		$("#myModal2").css("display","none");
+		$("#buttonsRow").css("display","block");
+	});
+	
+	$("#finish").click(function(){
+		if(!started){
+			$("#message").modal("show");
+		}else{
+			window.location.href = "/NurseWorkflows/index.jsp?dataCollectionSuccess=true";
+		}
+	});
+	$("#cancel").click(function(){
+		$("#pageForm").attr("action","cancelFunction.do");
+		$("#pageForm").submit();
+	});
 	</script>
 </html>

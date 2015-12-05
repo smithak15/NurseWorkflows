@@ -87,7 +87,7 @@
 		  		<div class="form-group"> 
 		  			<div class="col-md-offset-6 col-md-6">
 		      			<button type="button" class="btn btn-default col-md-4" id="cancel">Cancel</button>
-		      			<button type="submit" class="btn btn-success col-md-4">Next</button>
+		      			<button type="submit" id="sub" class="btn btn-success col-md-4">Next</button>
 		    		</div>
 		  		</div>
 				</form>

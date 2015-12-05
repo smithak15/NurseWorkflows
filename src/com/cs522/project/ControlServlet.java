@@ -88,20 +88,20 @@ public class ControlServlet extends HttpServlet {
 	    
 	    Rectangle rect = new Rectangle();
 	    rect.setId("1");
-	    rect.setTop(104);
-	    rect.setLeft(216);
-	    rect.setHeight(99);
-	    rect.setWidth(168);
-	    rect.setLocation("Surgery");
+	    rect.setTop(128);
+	    rect.setLeft(135);
+	    rect.setHeight(131);
+	    rect.setWidth(202);
+	    rect.setLocation("Examination Rooms");
 	    rectList.put("rectangle1",rect);
 	    
 	    rect = new Rectangle();
 	    rect.setId("2");
-	    rect.setTop(200);
-	    rect.setLeft(593);
-	    rect.setHeight(65);
-	    rect.setWidth(95);
-	    rect.setLocation("Lab");
+	    rect.setTop(348);
+	    rect.setLeft(450);
+	    rect.setHeight(70);
+	    rect.setWidth(184);
+	    rect.setLocation("Surgery");
 	    rectList.put("rectangle2",rect);
 	    
 	    JSONObject json = new JSONObject();

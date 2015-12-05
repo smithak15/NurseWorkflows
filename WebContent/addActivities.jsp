@@ -69,7 +69,7 @@
 			      	<div class="modal-header">
 			          <button type="button" class="close" id="close" data-dismiss="modal">&times;</button>
 			          <div id="success-alert" class="alert alert-success">
-  							<strong>Success!</strong> You have successfully added the activity.
+  							<strong>Success!</strong> You have successfully added the participant.
 						</div>
 			        </div>
 			      	<div class="modal-body">
@@ -117,7 +117,7 @@
 	</body>
 	<script type="text/javascript">
 	$(document).ready (function(){
-        $("#success-alert").hide();
+        //$("#success-alert").hide();
         $("#listGroup").hide();
 	});
 		$("#addButton").click(function(){
