@@ -69,7 +69,7 @@
 		  		<form class="form-horizontal" role="form">
 		  		<div class="form-group">
 		    		<label class="control-label col-sm-6" id="projName">Project Name:</label>
-		    		<!-- <div class="dropdown">
+		    		<!--additional code rmeoved <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select
                                 <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
