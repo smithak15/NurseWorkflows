@@ -2,8 +2,18 @@ Schedule and deliverable:
 
 - Design database schema for the project : 10/30 by 8PM (estimate : 2 hours)
 - Design UI for 'Add Participants' page : 11/02 by 8PM (estimate : 3 hours)
-- Setting up MySQL locally : 12/02 by 8PM (estimate : 1 hour)
+- Setting up MySQL locally : 11/02 by 8PM (estimate : 1 hour)
 - SQL scripts for table creation  : 11/03 by 9PM (estimate : 1 hour)
 - Design UI for 'Add Activities' page : 11/04 by 8PM (estimate : 3 hours)
 - Coding for 'Add Participants' functionality : 11/05 by 8PM (estimate : 4 hours)
 - Coding for 'Add Activities' functionality : 11/06 by 8PM (estimate : 2 hours)
+
+
+- Add the file downlaod operation for view workflow : 11/10 (estimate : 2 hours)
+- Add time for recording tasks done : 11/13(estimate : 4 hours)
+
+  Alpha testing fixes
+- Change the styles of view workflow and popup message for user to check add functionality : 11/25 (estimate : 8 hours)
+- Change the functionality of timer from analog to digital : 11/26 (estimate : 4 hrs)
+- Enhance  the visulization : 11/26 (estimated : 5 hrs)
+- Details on demand and correlation in visualization : 11/27 (estimated :7 hrs)
