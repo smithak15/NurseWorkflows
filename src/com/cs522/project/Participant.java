@@ -7,6 +7,7 @@ package com.cs522.project;
  * @author Smitha
  *
  */
+ //Basic pojo class
 public class Participant {
 	private String partiName;
 	private String partiDesc;
