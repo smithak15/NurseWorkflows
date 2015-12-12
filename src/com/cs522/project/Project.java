@@ -7,6 +7,7 @@ package com.cs522.project;
  * @author Smitha
  *
  */
+ //project details pojo class
 public class Project {
 	private int projectId;
 	private String projectName;
