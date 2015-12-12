@@ -1,5 +1,5 @@
 package com.cs522.project;
-
+//offset and coordinate details are dealt using this pojo class
 public class Rectangle {
 	String location;
 	String id;
