@@ -49,7 +49,7 @@ public class ControlServlet extends HttpServlet {
 		doGet(request, response);
 		
 	}
-
+          // Method for each operation functionality
 	private void doProcess(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		// TODO Auto-generated method stub
 		
@@ -115,7 +115,7 @@ public class ControlServlet extends HttpServlet {
 	    //request.getRequestDispatcher("dataCollection.jsp").forward(request, response);
 		}
 	}
-	
+	//adds prject name and description to the existing database
 	private void addProject(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		String projName = request.getParameter("projName");
 		String projDesc = request.getParameter("projDesc");
@@ -126,7 +126,7 @@ public class ControlServlet extends HttpServlet {
 		session.setAttribute("project", project);
 		request.getRequestDispatcher("addParticipants.jsp").forward(request, response);
 	}
-	
+	//ajax method for add participant
 	@SuppressWarnings("unchecked")
 	private void addParticipantsAjax(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		List<Participant> participants = null;
@@ -150,7 +150,7 @@ public class ControlServlet extends HttpServlet {
 	private void addParticipants(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		request.getRequestDispatcher("addActivities.jsp").forward(request, response);
 	}
-	
+	//method for adding activities with ajax logic
 	@SuppressWarnings("unchecked")
 	private void addActivitiesAjax(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		List<Activity> activities = null;
@@ -242,7 +242,7 @@ public class ControlServlet extends HttpServlet {
 	    request.getRequestDispatcher("index.jsp").forward(request, response);*/
 	}
 	
-	
+	//method to collect the activities recorded data and store it 
 	private void dataCollection(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		DatabaseConnector dao = new DatabaseConnector();
 		try{
@@ -254,7 +254,7 @@ public class ControlServlet extends HttpServlet {
 		}
 		request.getRequestDispatcher("dataCollection.jsp").forward(request, response);
 	}
-	
+	//retrieve the participants involved
 	private void getParticipants(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		DatabaseConnector dao = new DatabaseConnector();
 		try{
@@ -268,12 +268,12 @@ public class ControlServlet extends HttpServlet {
 		}
 		//request.getRequestDispatcher("dataCollection.jsp").forward(request, response);
 	}
-	
+	//initial layout load
 	private void loadLayout(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		//DatabaseConnector dao = new DatabaseConnector();
 		request.getRequestDispatcher("dataCollectionTwo.jsp").forward(request, response);
 	}
-	
+	//cancel button
 	private void cancelFunction(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		HttpSession session = request.getSession(false);
 		if (session != null) {
