@@ -25,7 +25,7 @@ public class DatabaseConnector {
 	final private String host = "localhost";
 	final private String user = "root";
 	final private String passwd = "Kitty.123";
-	
+	//obtaining connection details
 	public void getConnection() throws Exception{
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
@@ -37,7 +37,7 @@ public class DatabaseConnector {
 			System.out.println("Connection failed");
 		}
 	}
-	
+	//providing details to be stored
 	public void addDetails(Project project,List<Participant> participants,List<Activity> activities,List<Rectangle> rectList) 
 			throws Exception{
 	try{
@@ -107,7 +107,7 @@ public class DatabaseConnector {
         if (resultSet != null) try { resultSet.close(); } catch (SQLException logOrIgnore) {}
     }
 	}
-	
+	//retrieval of projects to display on dropdown
 	public List<Project> getAllProjects()throws Exception{
 		List<Project> projList = new ArrayList<Project>();
 		String sql = "SELECT * FROM PROJECT";
@@ -129,7 +129,7 @@ public class DatabaseConnector {
 	    }
 		return projList;
 	}
-	
+	// list of people in a project
 	public List<Participant> getProjectParticipants(int projectId)throws Exception{
 		List<Participant> partiList = new ArrayList<Participant>();
 		String sql = "SELECT PARTICIPANT_ID,PARTICIPANT_NAME "
